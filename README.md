@@ -35,9 +35,13 @@ Check out the wireframes:
 
 -   [Landing page](/wireframes/index.html)
 -   [Registration page](/wireframes/register.html)
+-   [Introduction page](/wireframes/introduction.html)
 -   [Login page](/wireframes/login-page.html)
 -   [Dashboard](/wireframes/dashboard.html)
 -   [Navigation Menu](/wireframes/nav-menu.html)
+-   [Expense Log](/wireframes/expense-log.html)
+-   [Categories](/wireframes/budget-categories.html)
+-   [Payment Methods](/wireframes/payment-methods.html)
 -   [Add expense](/wireframes/add-expense.html)
 -   [Create budget category](/wireframescreate-budget-category.html)
 -   [Create payment method](/wireframescreate-payment-method.html)

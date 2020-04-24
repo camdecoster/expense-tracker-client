@@ -11,7 +11,10 @@
         <link rel="stylesheet" type="text/css" href="index.css" />
     </head>
     <body>
-        <nav role="navigation">Nav</nav>
+        <nav role="navigation">
+            <a href="dashboard.html">Dashboard</a> |
+            <a href="add-expense.html">Add Expense</a>
+        </nav>
         <main role="main">
             <section>
                 <header role="banner">
@@ -30,18 +33,16 @@
                         />
                     </div>
                     <div>
-                        <label for="track-expenses-type"
-                            >Track Expenses Per</label
-                        >
+                        <label for="track-expenses-type">Track Expenses</label>
                         <select
                             name="track-expenses-type"
                             id="track-expenses-type"
                         >
-                            <option value="month">Month</option>
-                            <option value="cycle">Billing Cycle</option>
+                            <option value="month">Monthly</option>
+                            <option value="cycle">Offset</option>
                         </select>
                     </div>
-                    <!-- Only show cycle days if that option is selected -->
+                    <!-- Only show cycle days if offset option is selected -->
                     <!-- Days should only be required if cycle is selected -->
                     <div>
                         <label for="cycle-start-day">Cycle Start Day</label>

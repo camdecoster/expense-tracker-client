@@ -11,7 +11,10 @@
         <link rel="stylesheet" type="text/css" href="index.css" />
     </head>
     <body>
-        <nav role="navigation">Nav</nav>
+        <nav role="navigation">
+            <a href="dashboard.html">Dashboard</a> |
+            <a href="add-expense.html">Add Expense</a>
+        </nav>
         <main role="main">
             <section>
                 <header role="banner">
@@ -38,7 +41,7 @@
                         </select>
                     </div>
                     <div>
-                        <label for="budget">Monthly Budget</label>
+                        <label for="budget">Budget Amount</label>
                         <input
                             type="number"
                             name="amount"
@@ -48,11 +51,11 @@
                             required
                         />
                     </div>
-                    <div>
+                    <!-- <div>
                         <label for="rolling">Is this a rolling budget?</label>
-                        <!-- Include mouseover explanation for what a rolling budget is -->
+                        Include mouseover explanation for what a rolling budget is
                         <input type="checkbox" name="rolling" id="rolling" />
-                    </div>
+                    </div> -->
                     <div>
                         <label for="description">Description (Optional)</label>
                         <br />
