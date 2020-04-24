@@ -30,3 +30,14 @@ Future features will include:
 -   Add multiple expenses at once
 -   Bill tracking?
 -   Give user points for tracking (like a videogame)?
+
+Check out the wireframes:
+
+-   [Landing page](/wireframes/index.html)
+-   [Registration page](/wireframes/register.html)
+-   [Login page](/wireframes/login-page.html)
+-   [Dashboard](/wireframes/dashboard.html)
+-   [Navigation Menu](/wireframes/nav-menu.html)
+-   [Add expense](/wireframes/add-expense.html)
+-   [Create budget category](/wireframescreate-budget-category.html)
+-   [Create payment method](/wireframescreate-payment-method.html)
