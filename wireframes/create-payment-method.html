@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Add Payment Method</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="//cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.css"
+        />
+        <link rel="stylesheet" type="text/css" href="index.css" />
+    </head>
+    <body>
+        <nav role="navigation">Nav</nav>
+        <main role="main">
+            <section>
+                <header role="banner">
+                    <h1>Add Payment Method</h1>
+                </header>
+
+                <form class="add-payment-method">
+                    <div>
+                        <!-- Add logic to check if name already exists -->
+                        <label for="payment-method">Name</label>
+                        <input
+                            type="text"
+                            name="payment-method"
+                            id="payment-method"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label for="track-expenses-type"
+                            >Track Expenses Per</label
+                        >
+                        <select
+                            name="track-expenses-type"
+                            id="track-expenses-type"
+                        >
+                            <option value="month">Month</option>
+                            <option value="cycle">Billing Cycle</option>
+                        </select>
+                    </div>
+                    <!-- Only show cycle days if that option is selected -->
+                    <!-- Days should only be required if cycle is selected -->
+                    <div>
+                        <label for="cycle-start-day">Cycle Start Day</label>
+                        <!-- Date should default to current date -->
+                        <input
+                            type="number"
+                            id="cycle-start-day"
+                            name="cycle-start-day"
+                            min="1"
+                            max="31"
+                            step="1"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label for="cycle-end-day">Cycle End Day</label>
+                        <!-- Date should default to current date -->
+                        <input
+                            type="number"
+                            id="cycle-start-day"
+                            name="cycle-start-day"
+                            min="1"
+                            max="31"
+                            step="1"
+                            required
+                        />
+                        <!-- Add logic to ensure end day is before start day -->
+                        <!-- Figure out how to handle days that don't occur every month (29-31) -->
+                    </div>
+
+                    <div>
+                        <label for="description">Description (Optional)</label>
+                        <br />
+                        <input
+                            type="text"
+                            name="description"
+                            id="description"
+                        />
+                    </div>
+                    <button type="submit">Add Payment Method</button>
+                </form>
+            </section>
+        </main>
+        <footer role="content-info">Footer</footer>
+    </body>
+</html>

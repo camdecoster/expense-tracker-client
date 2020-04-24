@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Expenses Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="//cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.css"
+        />
+        <link rel="stylesheet" type="text/css" href="index.css" />
+    </head>
+    <body>
+        <nav role="navigation">Add Expense</nav>
+        <main role="main">
+            <header role="banner">
+                <h2>Expenses Dashboard</h2>
+                <p><b>Monthly</b> | Quarterly | Annual</p>
+                <select name="display-month" id="display-month">
+                    <option value="0">Current Month</option>
+                    <option value="1">Previous Month</option>
+                    <option value="2">2 Months Ago</option>
+                    <option value="3">3 Months Ago</option>
+                    <option value="4">4 Months Ago</option>
+                    <option value="5">5 Months Ago</option>
+                    <option value="6">6 Months Ago</option>
+                </select>
+                <p>April 2020</p>
+            </header>
+            <section>
+                <h3>Monthly Spending</h3>
+                <p>April 2020</p>
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Expenses</th>
+                        <th>Budget</th>
+                        <th>Remain</th>
+                    </tr>
+                    <tr>
+                        <td>Auto</td>
+                        <td>$200.00</td>
+                        <td>$500.00</td>
+                        <td>$300.00</td>
+                    </tr>
+                    <tr>
+                        <td>Food</td>
+                        <td>$400.00</td>
+                        <td>$500.00</td>
+                        <td>$100.00</td>
+                    </tr>
+                    <tr>
+                        <td>Home</td>
+                        <td>$1000.00</td>
+                        <td>$1200.00</td>
+                        <td>$200.00</td>
+                    </tr>
+                    <tr>
+                        <td>Pets</td>
+                        <td>$50.00</td>
+                        <td>$100.00</td>
+                        <td>$50.00</td>
+                    </tr>
+                </table>
+            </section>
+            <section>
+                <h3>Payment Methods</h3>
+                <p>April 2020</p>
+                <table>
+                    <tr>
+                        <th>Method</th>
+                        <th>Expenses</th>
+                        <th>Cycle</th>
+                    </tr>
+                    <tr>
+                        <td>Visa</td>
+                        <td>$1450.00</td>
+                        <td>04/05 to 05/04</td>
+                    </tr>
+                    <!-- <tr>
+                        <td>From 04/05</td>
+                    </tr>
+                    <tr>
+                        <td>To 05/04</td>
+                    </tr> -->
+                    <tr>
+                        <td>AmEx</td>
+                        <td>$850.00</td>
+                        <td>04/09 to 05/08</td>
+                    </tr>
+                    <tr>
+                        <td>Cash</td>
+                        <td>$650.00</td>
+                        <td>04/01 to 04/30</td>
+                    </tr>
+                    <tr>
+                        <td>Check</td>
+                        <td>$250.00</td>
+                        <td>04/01 to 04/30</td>
+                    </tr>
+                </table>
+            </section>
+            <section>
+                <p>
+                    [<em>Placeholder for pie chart showing monthly expenses </em
+                    >]
+                </p>
+            </section>
+        </main>
+        <footer role="content-info">Footer</footer>
+    </body>
+</html>

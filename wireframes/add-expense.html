@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Add Expense</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="//cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.css"
+        />
+        <link rel="stylesheet" type="text/css" href="index.css" />
+    </head>
+    <body>
+        <nav role="navigation">Nav</nav>
+        <main role="main">
+            <section>
+                <header role="banner">
+                    <h1>Add Expense</h1>
+                </header>
+
+                <form class="add-expense-form">
+                    <div>
+                        <label for="date">Date</label>
+                        <!-- Date should default to current date -->
+                        <input type="date" id="date" name="date" required />
+                    </div>
+                    <div>
+                        <label for="type">Type</label>
+                        <select name="type" id="type">
+                            <option value="expense">Expense</option>
+                            <option value="credit">Credit</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="amount">Amount</label>
+                        <input
+                            type="number"
+                            name="amount"
+                            id="amount"
+                            min="0"
+                            step="0.01"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label for="payee">Payee</label>
+                        <!-- Suggest payees based on past inputs -->
+                        <input type="text" name="payee" id="payee" required />
+                    </div>
+                    <div>
+                        <label for="category">Category</label>
+                        <select name="category" id="category">
+                            <option value="auto">Auto</option>
+                            <option value="bills">Bills</option>
+                            <option value="groceries">Groceries</option>
+                            <option value="uncategorized">Uncategorized</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="payment-method">Payment Method</label>
+                        <select name="payment-method" id="payment-method">
+                            <option value="visa">Visa</option>
+                            <option value="check">Check</option>
+                            <option value="cash">Cash</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="description">Description (Optional)</label>
+                        <br />
+                        <input
+                            type="text"
+                            name="description"
+                            id="description"
+                        />
+                    </div>
+                    <button type="submit">Submit Expense</button>
+                </form>
+            </section>
+        </main>
+        <footer role="content-info">Footer</footer>
+    </body>
+</html>

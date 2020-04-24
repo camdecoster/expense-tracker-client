@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Add Budget Category</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="//cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.css"
+        />
+        <link rel="stylesheet" type="text/css" href="index.css" />
+    </head>
+    <body>
+        <nav role="navigation">Nav</nav>
+        <main role="main">
+            <section>
+                <header role="banner">
+                    <h1>Add Budget Category</h1>
+                </header>
+
+                <form class="add-category-form">
+                    <div>
+                        <!-- Add logic to check if name already exists -->
+                        <label for="category">Name</label>
+                        <input
+                            type="text"
+                            name="category"
+                            id="category"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label for="budget-type">Budget Type</label>
+                        <select name="budget-type" id="budget-type">
+                            <option value="monthly">Monthly</option>
+                            <option value="quarterly">Quarterly</option>
+                            <option value="annual">Annual</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="budget">Monthly Budget</label>
+                        <input
+                            type="number"
+                            name="amount"
+                            id="amount"
+                            min="0"
+                            step="0.01"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label for="rolling">Is this a rolling budget?</label>
+                        <!-- Include mouseover explanation for what a rolling budget is -->
+                        <input type="checkbox" name="rolling" id="rolling" />
+                    </div>
+                    <div>
+                        <label for="description">Description (Optional)</label>
+                        <br />
+                        <input
+                            type="text"
+                            name="description"
+                            id="description"
+                        />
+                    </div>
+                    <button type="submit">Add Category</button>
+                </form>
+            </section>
+        </main>
+        <footer role="content-info">Footer</footer>
+    </body>
+</html>
