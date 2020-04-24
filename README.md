@@ -43,5 +43,5 @@ Check out the wireframes:
 -   [Categories](/wireframes/budget-categories.html)
 -   [Payment Methods](/wireframes/payment-methods.html)
 -   [Add expense](/wireframes/add-expense.html)
--   [Create budget category](/wireframescreate-budget-category.html)
--   [Create payment method](/wireframescreate-payment-method.html)
+-   [Create budget category](/wireframes/create-budget-category.html)
+-   [Create payment method](/wireframes/create-payment-method.html)
