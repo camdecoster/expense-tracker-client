@@ -1,11 +1,15 @@
-h3 a {
+nav a {
     text-decoration: none;
 }
 
-h3 a,
-h3 a:hover {
-    color: black;
+/* nav a,
+nav a:hover {
+    color: inherit;
 }
+
+nav a:active {
+    color: var(--orange-light);
+} */
 
 h3 {
     display: inline;
@@ -24,10 +28,11 @@ nav {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    background-color: dodgerblue;
+    border-bottom: 1px solid var(--blue-medium);
+    background-color: var(--blue-dark);
 }
 
-nav .containerFlex {
+nav .container_flex {
     width: 90%;
     min-width: 300px;
     display: flex;
@@ -48,4 +53,8 @@ nav .faIcon {
     position: relative;
     display: flex;
     flex-direction: column;
+}
+
+nav button {
+    width: 40px;
 }

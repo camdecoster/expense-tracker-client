@@ -1,29 +1,84 @@
 :root {
-    --link-color: orange;
-    --link-color-hover: darkorange;
+    --blue-dark: #040084;
+    --blue-medium: #0141cf;
+    --blue-light: #1874d2;
+    --blue-lighter: #5392d1;
+    --orange-dark: #fd6600;
+    --orange-medium: #fd7f00;
+    --orange-light: #fecc98;
+    --red-dark: #ff3c31;
+    --red-medium: #ff635c;
+    --red-light: #ff9995;
+    --light: white;
+    --light-accent: rgb(175, 175, 175);
+    --light-accent-2: rgb(125, 125, 125);
+    --link-color: var(--orange-medium);
+    --link-color-active: var(--orange-light);
+    --link-color-hover: blue;
 }
 
 #App {
     display: flex;
     flex-direction: row;
+    background-color: var(--blue-dark);
+    color: var(--light);
 }
 
-.pageContainer {
+.container_page {
     width: 100vw;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 main {
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
+main > section {
+    background-color: var(--blue-dark);
+}
+
 a {
     color: var(--link-color);
 }
 
-a:hover {
+/* a:hover {
     color: var(--link-color-hover);
+} */
+
+a:active {
+    color: var(--link-color-active);
+}
+
+button {
+    height: 40px;
+    border: 2px solid var(--blue-medium);
+    border-radius: 20px;
+    background-color: var(--blue-light);
+    color: inherit;
+}
+
+button:active {
+    background-color: var(--blue-medium);
+    border-color: var(--blue-light);
+}
+
+.link_list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.link_list li {
+    padding: 5px;
+}
+
+.link_list li:hover {
+    background-color: var(--blue-medium);
 }

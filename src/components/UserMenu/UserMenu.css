@@ -1,9 +1,11 @@
 #UserMenu {
     position: absolute;
     top: 40px;
+    right: 0px;
     display: flex;
     flex-direction: column;
     /* justify-content: space-around; */
     /* align-items: center; */
-    background-color: aqua;
+    background-color: var(--blue-light);
+    border: 1px solid var(--blue-medium);
 }

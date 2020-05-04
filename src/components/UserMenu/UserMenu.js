@@ -26,8 +26,8 @@ class UserMenu extends Component {
 
     renderLogInLink = () => {
         return (
-            <div className='NavBar_not-logged-in'>
-                <ul>
+            <div className='NavBar_not_logged_in'>
+                <ul className='link_list'>
                     <li>
                         <Link to='/login' onClick={this.handleLinkClick}>
                             Log In
@@ -45,8 +45,8 @@ class UserMenu extends Component {
 
     renderLogOutLink = () => {
         return (
-            <div className='NavBar_logged-in'>
-                <ul>
+            <div className='NavBar_logged_in'>
+                <ul className='link_list'>
                     <li>
                         <p>Settings</p>
                     </li>
@@ -62,7 +62,7 @@ class UserMenu extends Component {
 
     render() {
         return (
-            <div id='UserMenu' className='flexContainer'>
+            <div id='UserMenu' className='flex_container'>
                 {TokenService.hasAuthToken()
                     ? this.renderLogOutLink()
                     : this.renderLogInLink()}

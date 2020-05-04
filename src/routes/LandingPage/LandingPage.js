@@ -11,7 +11,7 @@ class LandingPage extends Component {
 
     render() {
         return (
-            <div className='LandingPage'>
+            <section className='LandingPage'>
                 <header role='banner'>
                     <h1>Expense Tracker</h1>
                 </header>
@@ -82,7 +82,7 @@ class LandingPage extends Component {
                     </p>
                     <Link to='/register'>Sign Up</Link>
                 </section>
-            </div>
+            </section>
         );
     }
 }

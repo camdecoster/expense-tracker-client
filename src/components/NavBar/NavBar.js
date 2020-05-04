@@ -37,7 +37,7 @@ class NavBar extends Component {
 
         return (
             <nav role='navigation'>
-                <div className='containerFlex'>
+                <div className='container_flex'>
                     <button
                         className='buttonShowNav'
                         onClick={() => {

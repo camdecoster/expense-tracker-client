@@ -89,7 +89,7 @@ class SideBar extends Component {
                 <h3>Expense Tracker</h3>
 
                 {/* Links and logout should only be shown if user logged in */}
-                <ul>
+                <ul className='link_list'>
                     {TokenService.hasAuthToken()
                         ? this.renderAuthorized()
                         : this.renderUnauthorized()}

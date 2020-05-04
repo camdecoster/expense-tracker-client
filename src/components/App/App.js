@@ -91,7 +91,7 @@ class App extends Component {
                 <TrackerContext.Provider value={contextValue}>
                     {sideBarElement}
 
-                    <section className='pageContainer'>
+                    <section className='container_page'>
                         <NavBar />
                         <main>
                             <Route

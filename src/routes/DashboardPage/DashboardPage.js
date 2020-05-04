@@ -150,7 +150,7 @@ function DashboardPage() {
     );
 
     return (
-        <section className='DashboardPage'>
+        <section id='DashboardPage'>
             <header role='banner'>
                 <h2>Expenses Dashboard</h2>
                 <div className='intervalSelector'>
