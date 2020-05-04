@@ -1,6 +1,6 @@
 // React
 import React, { useState, useEffect, useContext } from "react";
-import { NavLink, withRouter } from "react-router-dom";
+// import { NavLink, withRouter } from "react-router-dom";
 
 // Configuration
 import "./DashboardPage.css";
@@ -18,13 +18,13 @@ function getExpenseData(spendingInterval, data) {
     switch (spendingInterval) {
         case "month":
             return month[data];
-            break;
+        // break;
         case "quarter":
             return quarter[data];
-            break;
+        // break;
         case "year":
             return year[data];
-            break;
+        // break;
         default:
             throw new Error(
                 "Wrong interval given. Interval must be month, quarter, or year."
@@ -39,30 +39,20 @@ function firstLetterUppercase(stringToChange) {
 }
 
 // Create link to change interval
-function IntervalChangeLink(props) {
-    return (
-        <a
-            className={
-                props.spendingInterval === props.interval
-                    ? "interval intervalActive"
-                    : "interval"
-            }
-            onClick={() => props.setSpendingInterval(props.interval)}
-        >
-            {firstLetterUppercase(props.interval) + "ly"}
-        </a>
-    );
-}
-
-function handleInputChange(ev, callback) {
-    const { id, value } = ev.target;
-    // this.setState({
-    //     ...this.state,
-    //     [id]: value,
-    // });
-    console.log(id, value);
-    // callback("test");
-}
+// function IntervalChangeLink(props) {
+//     return (
+//         <a
+//             className={
+//                 props.spendingInterval === props.interval
+//                     ? "interval intervalActive"
+//                     : "interval"
+//             }
+//             onClick={() => props.setSpendingInterval(props.interval)}
+//         >
+//             {firstLetterUppercase(props.interval) + "ly"}
+//         </a>
+//     );
+// }
 
 function DashboardPage() {
     // Access context
@@ -77,7 +67,6 @@ function DashboardPage() {
             month: "long",
         })} ${dateSelected.getFullYear()}`
     );
-
     const [spendingInterval, setSpendingInterval] = useState("month");
     const [spendingData, setSpendingData] = useState(
         React.useMemo(() => getExpenseData("month", "spendingData"), [])
@@ -86,11 +75,21 @@ function DashboardPage() {
         React.useMemo(() => getExpenseData("month", "paymentMethodData"), [])
     );
 
-    // Get current month and year
-    // const monthCurrent = context.dateCurrent.toLocaleString("default", {
-    //     month: "long",
-    // });
-    // const yearCurrent = context.dateCurrent.getFullYear();
+    // Create link to change interval
+    const createIntervalChangeButton = (interval) => {
+        return (
+            <button
+                className={
+                    spendingInterval === interval
+                        ? "interval intervalActive"
+                        : "interval"
+                }
+                onClick={() => setSpendingInterval(interval)}
+            >
+                {firstLetterUppercase(interval) + "ly"}
+            </button>
+        );
+    };
 
     // Update items after state change
     useEffect(() => {
@@ -155,23 +154,9 @@ function DashboardPage() {
             <header role='banner'>
                 <h2>Expenses Dashboard</h2>
                 <div className='intervalSelector'>
-                    <IntervalChangeLink
-                        interval='month'
-                        spendingInterval={spendingInterval}
-                        setSpendingInterval={setSpendingInterval}
-                    />
-                    |
-                    <IntervalChangeLink
-                        interval='quarter'
-                        spendingInterval={spendingInterval}
-                        setSpendingInterval={setSpendingInterval}
-                    />
-                    |
-                    <IntervalChangeLink
-                        interval='year'
-                        spendingInterval={spendingInterval}
-                        setSpendingInterval={setSpendingInterval}
-                    />
+                    {createIntervalChangeButton("month")}|
+                    {createIntervalChangeButton("quarter")}|
+                    {createIntervalChangeButton("year")}
                 </div>
                 <select
                     name='display-month'

@@ -43,7 +43,7 @@ function AddPaymentMethodPage() {
             description = "",
         } = event.target;
 
-        const category = {
+        const paymentMethod = {
             name,
             cycleType,
             cycleStart,

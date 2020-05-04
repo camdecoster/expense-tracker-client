@@ -1,15 +1,15 @@
 // React
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 // Configuration
 import "./AddCategoryPage.css";
-import TrackerContext from "../../contexts/TrackerContext";
+// import TrackerContext from "../../contexts/TrackerContext";
 // import ExpenseApiService from "../../services/expense-api-service";
 
 function AddCategoryPage() {
     // Access context
-    const context = useContext(TrackerContext);
+    // const context = useContext(TrackerContext);
 
     // Access history
     const history = useHistory();

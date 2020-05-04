@@ -1,11 +1,11 @@
 // React
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 // Configuration
 import "./AddExpensePage.css";
 import TrackerContext from "../../contexts/TrackerContext";
-import ExpenseApiService from "../../services/expense-api-service";
+// import ExpenseApiService from "../../services/expense-api-service";
 
 class AddExpensePage extends Component {
     static contextType = TrackerContext;
