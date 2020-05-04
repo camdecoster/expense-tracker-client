@@ -1,0 +1,29 @@
+:root {
+    --link-color: orange;
+    --link-color-hover: darkorange;
+}
+
+#App {
+    display: flex;
+    flex-direction: row;
+}
+
+.pageContainer {
+    width: 100vw;
+    height: 100vh;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+a {
+    color: var(--link-color);
+}
+
+a:hover {
+    color: var(--link-color-hover);
+}

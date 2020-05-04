@@ -1,0 +1,15 @@
+.DashboardPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+a.interval {
+    margin-left: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.intervalActive {
+    font-weight: bold;
+}
