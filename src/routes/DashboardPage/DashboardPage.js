@@ -144,6 +144,9 @@ function DashboardPage() {
             {
                 Header: "Cycle",
                 accessor: "cycle",
+                Cell: ({ cell: { value } }) => (
+                    <div className='left_align'>{value}</div>
+                ),
             },
         ],
         []
@@ -153,9 +156,11 @@ function DashboardPage() {
         <section id='DashboardPage'>
             <header role='banner'>
                 <h2>Expenses Dashboard</h2>
+            </header>
+            <section>
                 <div className='intervalSelector'>
-                    {createIntervalChangeButton("month")}|
-                    {createIntervalChangeButton("quarter")}|
+                    {createIntervalChangeButton("month")}
+                    {createIntervalChangeButton("quarter")}
                     {createIntervalChangeButton("year")}
                 </div>
                 <select
@@ -178,7 +183,7 @@ function DashboardPage() {
                     <option value='6'>6 Months Ago</option>
                 </select>
                 <p>{dateString}</p>
-            </header>
+            </section>
             <section>
                 <h3>
                     {firstLetterUppercase(spendingInterval) + "ly"} Spending

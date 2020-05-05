@@ -11,7 +11,7 @@ class LandingPage extends Component {
 
     render() {
         return (
-            <section className='LandingPage'>
+            <section id='LandingPage'>
                 <header role='banner'>
                     <h1>Expense Tracker</h1>
                 </header>

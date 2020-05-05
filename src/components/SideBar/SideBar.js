@@ -25,6 +25,7 @@ class SideBar extends Component {
             return (
                 <li key={navLink.link}>
                     <NavLink
+                        exact
                         to={"/" + navLink.link}
                         onClick={this.handleLinkClick}
                     >
@@ -85,7 +86,7 @@ class SideBar extends Component {
 
     render() {
         return (
-            <div id='SideBar'>
+            <div id='SideBar' className={this.props.className}>
                 <h3>Expense Tracker</h3>
 
                 {/* Links and logout should only be shown if user logged in */}

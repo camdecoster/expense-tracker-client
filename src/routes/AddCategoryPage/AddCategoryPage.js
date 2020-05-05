@@ -74,16 +74,16 @@ function AddCategoryPage() {
     return (
         <section>
             <header role='banner'>
-                <h1>Add Budget Category</h1>
+                <h2>Add Budget Category</h2>
             </header>
 
             <form
-                class='add-category-form'
+                className='add_category_form'
                 onSubmit={(event) => handleSubmit(event)}
             >
                 <div>
                     {/* <!-- Add logic to check if name already exists --> */}
-                    <label for='category'>Name</label>
+                    <label htmlFor='category'>Name</label>
                     <input
                         type='text'
                         name='name'
@@ -93,7 +93,7 @@ function AddCategoryPage() {
                     />
                 </div>
                 <div>
-                    <label for='type'>Budget Type</label>
+                    <label htmlFor='type'>Budget Type</label>
                     <select
                         name='type'
                         id='type'
@@ -107,7 +107,7 @@ function AddCategoryPage() {
                     </select>
                 </div>
                 <div>
-                    <label for='budget_amount'>Budget Amount</label>
+                    <label htmlFor='budget_amount'>Budget Amount</label>
                     <input
                         type='number'
                         name='budget_amount'
@@ -124,8 +124,7 @@ function AddCategoryPage() {
                         <input type="checkbox" name="rolling" id="rolling" />
                     </div> --> */}
                 <div>
-                    <label for='description'>Description (Optional)</label>
-                    <br />
+                    <label htmlFor='description'>Description (Optional)</label>
                     <input
                         type='text'
                         name='description'

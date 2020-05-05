@@ -1,9 +1,25 @@
 #SideBar {
-    /* position: fixed; */
+    box-sizing: border-box;
+    position: fixed;
+    /* display: inline-block; */
+    height: 100%;
+    width: 200px;
     top: 0;
-    left: 0;
-    width: 300px;
-    height: 100vh;
-    /* background-color: rgb(227, 240, 253); */
+    left: -200px;
     border-right: 1px solid var(--blue-medium);
+    transition: 0.5s;
+    background-color: inherit;
+}
+
+#SideBar a {
+    display: block;
+    transition: 0.3s;
+}
+
+#SideBar.open {
+    left: 0;
+}
+
+#SideBar .active {
+    font-weight: bold;
 }

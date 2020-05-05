@@ -84,7 +84,7 @@ class AddExpensePage extends Component {
 
     render() {
         return (
-            <section className='AddExpensePage'>
+            <section id='AddExpensePage'>
                 <header role='banner'>
                     <h1>Add Expense</h1>
                 </header>
@@ -173,7 +173,6 @@ class AddExpensePage extends Component {
                         <label htmlFor='description'>
                             Description (Optional)
                         </label>
-                        <br />
                         <input
                             type='text'
                             name='description'

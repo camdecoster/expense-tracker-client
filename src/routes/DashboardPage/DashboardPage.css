@@ -1,8 +1,24 @@
 #DashboardPage {
     display: flex;
     flex-direction: column;
+    /* justify-content: center; */
     align-items: center;
     background-color: var(--blue-dark);
+}
+
+#DashboardPage section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.intervalSelector {
+    width: 250px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 a.interval {
@@ -18,4 +34,9 @@ a.interval {
 #DashboardPage button.intervalActive {
     font-weight: bolder;
     color: var(--orange-medium);
+}
+
+.left_align {
+    width: 100%;
+    text-align: right;
 }

@@ -5,9 +5,11 @@ const TrackerContext = React.createContext({
     dateCurrent: null,
     expenses: null,
     loggedIn: null,
+    setClassNames: () => {},
     setLoggedInState: () => {},
     showNav: null,
     showUserMenu: null,
+    toggleClassNames: () => {},
     toggleStateBoolean: () => {},
 });
 

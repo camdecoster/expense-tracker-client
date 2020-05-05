@@ -41,7 +41,15 @@ class NavBar extends Component {
                     <button
                         className='buttonShowNav'
                         onClick={() => {
-                            this.context.toggleStateBoolean("showNav");
+                            this.context.toggleClassNames(
+                                "classNamesSideBar",
+                                "open"
+                            );
+                            // console.log("SideBar classes changed?");
+                            this.context.toggleClassNames(
+                                "classNamesContainerPage",
+                                "nav_open"
+                            );
                         }}
                     >
                         <FontAwesomeIcon className='faIcon' icon={faBars} />

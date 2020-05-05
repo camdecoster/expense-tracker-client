@@ -1,22 +1,3 @@
-:root {
-    --blue-dark: #040084;
-    --blue-medium: #0141cf;
-    --blue-light: #1874d2;
-    --blue-lighter: #5392d1;
-    --orange-dark: #fd6600;
-    --orange-medium: #fd7f00;
-    --orange-light: #fecc98;
-    --red-dark: #ff3c31;
-    --red-medium: #ff635c;
-    --red-light: #ff9995;
-    --light: white;
-    --light-accent: rgb(175, 175, 175);
-    --light-accent-2: rgb(125, 125, 125);
-    --link-color: var(--orange-medium);
-    --link-color-active: var(--orange-light);
-    --link-color-hover: blue;
-}
-
 #App {
     display: flex;
     flex-direction: row;
@@ -25,18 +6,28 @@
 }
 
 .container_page {
+    position: relative;
     width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: margin-left 0.5s;
+    background-color: inherit;
 }
 
-main {
+.container_page.nav_open {
+    margin-left: 200px;
+}
+
+#App main {
+    position: relative;
     max-width: 500px;
+    padding-bottom: 10px;
+    /* Need to fix issue with height when less than viewport */
+    /* min-height: 100vh; */
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
@@ -46,14 +37,31 @@ main > section {
 
 a {
     color: var(--link-color);
+    text-decoration: none;
 }
-
-/* a:hover {
-    color: var(--link-color-hover);
-} */
 
 a:active {
     color: var(--link-color-active);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input,
+select {
+    margin-bottom: 15px;
+}
+
+input {
+    box-sizing: border-box;
+    width: 200px;
+    height: 20px;
+    padding-left: 10px;
+    background-color: var(--light);
+    border: 1px solid var(--blue-medium);
+    border-radius: 10px;
 }
 
 button {
@@ -81,4 +89,8 @@ button:active {
 
 .link_list li:hover {
     background-color: var(--blue-medium);
+}
+
+.hidden {
+    display: none !important;
 }

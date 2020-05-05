@@ -8,7 +8,7 @@ class Footer extends Component {
     render() {
         return (
             <footer>
-                <div className='flexContainer'>
+                <div className='container_flex'>
                     <p>Created by Cameron DeCoster</p>
                     <a
                         href='https://github.com/camdecoster/expense-tracker-client'

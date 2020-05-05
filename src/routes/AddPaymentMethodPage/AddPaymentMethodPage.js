@@ -88,7 +88,7 @@ function AddPaymentMethodPage() {
             </header>
 
             <form
-                class='add-category-form'
+                className='add-category-form'
                 onSubmit={(event) => handleSubmit(event)}
             >
                 <div>

@@ -1,6 +1,11 @@
 table {
     border-collapse: collapse;
+    text-align: center;
     background-color: var(--blue-light);
+}
+
+th {
+    background-color: var(--blue-medium);
 }
 
 table,
@@ -9,6 +14,7 @@ td {
     border: 1px solid var(--light);
 }
 
+th,
 td {
     margin: 0;
     padding: 0.5rem;

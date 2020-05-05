@@ -29,11 +29,17 @@ import RegistrationPage from "../../routes/RegistrationPage/RegistrationPage";
 
 class App extends Component {
     state = {
+        classNames: {
+            container_page: "container_page",
+            SideBar: "closed",
+        },
+        classNamesContainerPage: "container_page",
+        classNamesSideBar: "closed",
         dateCurrent: new Date(),
         error: null,
         expenses: [],
         loggedIn: false,
-        showNav: false,
+        showSideBar: true,
         showUserMenu: false,
     };
 
@@ -41,6 +47,44 @@ class App extends Component {
     toggleStateBoolean = (element) => {
         this.setState({
             [element]: !this.state[element],
+        });
+    };
+
+    toggleClassNames = (element, classNamesToToggleString) => {
+        // Split given classNames into array
+        // classNamesToToggle should be space delimited string: 'class1 class2'
+        let classNamesToToggle = classNamesToToggleString.split(" ");
+
+        // Split current classNames into array
+        // let classNames = this.state.classNames[element].split(" ");
+        let classNames = this.state[element].split(" ");
+
+        // See if each new className is listed or not, toggle it on/off
+        classNamesToToggle.forEach((classNameToToggle) => {
+            const classNameFound = classNames.find(
+                (className) => className === classNameToToggle
+            );
+            if (classNameFound) {
+                classNames = classNames.filter(
+                    (className) => className !== classNameToToggle
+                );
+            } else {
+                classNames.push(classNameToToggle);
+            }
+        });
+
+        // Update classNames for element, leave rest as is
+        this.setState({
+            // classNames: {
+            //     ...this.state.classNames,
+            [element]: classNames.join(" "),
+            // },
+        });
+    };
+
+    setClassNames = (element, classNames) => {
+        this.setState({
+            [element]: classNames,
         });
     };
 
@@ -78,20 +122,26 @@ class App extends Component {
             dateCurrent: this.state.dateCurrent,
             expenses: this.state.expenses,
             loggedIn: this.state.loggedIn,
+            setClassNames: this.setClassNames,
             setLoggedInState: this.setLoggedInState,
             showNav: this.state.showNav,
             showUserMenu: this.state.showUserMenu,
+            toggleClassNames: this.toggleClassNames,
             toggleStateBoolean: this.toggleStateBoolean,
         };
 
-        const sideBarElement = this.state.showNav ? <SideBar /> : "";
+        const sideBarElement = this.state.showSideBar ? (
+            <SideBar className={this.state.SideBarClassNames} />
+        ) : (
+            ""
+        );
 
         return (
             <div id='App'>
                 <TrackerContext.Provider value={contextValue}>
-                    {sideBarElement}
+                    <SideBar className={this.state.classNamesSideBar} />
 
-                    <section className='container_page'>
+                    <section className={this.state.classNamesContainerPage}>
                         <NavBar />
                         <main>
                             <Route
