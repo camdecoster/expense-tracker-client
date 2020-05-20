@@ -15,7 +15,7 @@ class UserMenu extends Component {
         TokenService.clearAuthToken();
 
         this.handleLinkClick();
-        this.context.setLoggedInState(false);
+        // this.context.setLoggedInState(false);
         // ALSO CLEAR EXPENSES IN STATE?
     };
 
@@ -47,9 +47,9 @@ class UserMenu extends Component {
         return (
             <div className='NavBar_logged_in'>
                 <ul className='link_list'>
-                    <li>
+                    {/* <li>
                         <p>Settings</p>
-                    </li>
+                    </li> */}
                     <li>
                         <Link to='/' onClick={this.handleLogOutClick}>
                             Log Out

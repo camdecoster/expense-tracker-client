@@ -3,14 +3,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 // Configuration
-import "./PaymentMethodsPage.css";
+import "./Payment_methodsPage.css";
 // import TrackerContext from "../../contexts/TrackerContext";
-import dummyData from "../../dummyData";
+import dummyData from "../../../dummyData";
 
 // Components
-import SimpleTable from "../../components/SimpleTable/SimpleTable";
+import SimpleTable from "../../../components/SimpleTable/SimpleTable";
 
-function PaymentMethodsPage() {
+export default function PaymentMethodsPage() {
     const data = React.useMemo(() => dummyData.methods, []);
 
     const columns = React.useMemo(
@@ -40,14 +40,12 @@ function PaymentMethodsPage() {
     );
 
     return (
-        <section className='PaymentMethodsPage'>
+        <section id='Payment_methodsPage' className='route_page'>
             <header role='banner'>
                 <h1>Payment Methods</h1>
-                <Link to='/add-payment-method'>Add new payment method</Link>
+                <Link to='/new'>Add new payment method</Link>
                 <SimpleTable columns={columns} data={data} />
             </header>
         </section>
     );
 }
-
-export default PaymentMethodsPage;

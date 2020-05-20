@@ -23,3 +23,7 @@ td {
 th {
     text-align: left;
 }
+
+#container_table {
+    overflow-x: auto;
+}

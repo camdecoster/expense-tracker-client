@@ -6,39 +6,68 @@ import renderer from "react-test-renderer";
 
 // Configuration
 import TrackerContext from "../../contexts/TrackerContext";
+import TokenService from "../../services/token-service";
 
 // Components
 import NavBar from "./NavBar";
 
-describe("<Footer> component", () => {
-    // Create dummy context values for test
-    const contextValue = {
-        showUserMenu: false,
-    };
+// Create mock service for TokenService
+jest.mock("../../services/token-service");
 
+function NavBarTest(props) {
+    return (
+        <MemoryRouter>
+            <TrackerContext.Provider
+                value={{ showUserMenu: props.showUserMenu }}
+            >
+                <NavBar />
+            </TrackerContext.Provider>
+        </MemoryRouter>
+    );
+}
+
+describe("<NavBar> component", () => {
     it("renders without crashing", () => {
         const div = document.createElement("div");
-        ReactDOM.render(
-            <MemoryRouter>
-                <TrackerContext.Provider value={contextValue}>
-                    <NavBar />
-                </TrackerContext.Provider>
-            </MemoryRouter>,
-            div
-        );
+        ReactDOM.render(<NavBarTest showUserMenu={false} />, div);
         ReactDOM.unmountComponentAtNode(div);
     });
 
-    // it("renders the UI as expected", () => {
-    //     const tree = renderer
-    //         .create(
-    //             <MemoryRouter>
-    //                 <TrackerContext.Provider>
-    //                     <NavBar />
-    //                 </TrackerContext.Provider>
-    //             </MemoryRouter>
-    //         )
-    //         .toJSON();
-    //     expect(tree).toMatchSnapshot();
-    // });
+    describe("renders the UI", () => {
+        describe("with authorization", () => {
+            TokenService.hasAuthToken.mockReturnValue(true);
+
+            it("with the UserMenu showing", () => {
+                const tree = renderer
+                    .create(<NavBarTest showUserMenu={true} />)
+                    .toJSON();
+                expect(tree).toMatchSnapshot();
+            });
+
+            it("with the UserMenu showing", () => {
+                const tree = renderer
+                    .create(<NavBarTest showUserMenu={false} />)
+                    .toJSON();
+                expect(tree).toMatchSnapshot();
+            });
+        });
+
+        describe("without authorization", () => {
+            TokenService.hasAuthToken.mockReturnValue(false);
+
+            it("with the UserMenu showing", () => {
+                const tree = renderer
+                    .create(<NavBarTest showUserMenu={true} />)
+                    .toJSON();
+                expect(tree).toMatchSnapshot();
+            });
+
+            it("with the UserMenu showing", () => {
+                const tree = renderer
+                    .create(<NavBarTest showUserMenu={false} />)
+                    .toJSON();
+                expect(tree).toMatchSnapshot();
+            });
+        });
+    });
 });

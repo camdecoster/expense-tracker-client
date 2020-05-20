@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 // Configuration
-import "./AddPaymentMethodPage.css";
+import "./NewPayment_methodPage.css";
 // import TrackerContext from "../../contexts/TrackerContext";
 // import ExpenseApiService from "../../services/expense-api-service";
 
-function AddPaymentMethodPage() {
+export default function NewPaymentMethodPage() {
     // Access context
     // const context = useContext(TrackerContext);
 
@@ -15,7 +15,7 @@ function AddPaymentMethodPage() {
     const history = useHistory();
 
     // Initialize state
-    const [paymentMethodData, setPaymentMethodData] = useState({
+    const [payment_methodData, setPayment_methodData] = useState({
         name: "",
         cycleType: "monthly",
         cycleStart: 1,
@@ -25,8 +25,8 @@ function AddPaymentMethodPage() {
 
     function handleInputChange(event) {
         const { id, value } = event.target;
-        setPaymentMethodData({
-            ...paymentMethodData,
+        setPayment_methodData({
+            ...payment_methodData,
             [id]: value,
         });
     }
@@ -43,7 +43,7 @@ function AddPaymentMethodPage() {
             description = "",
         } = event.target;
 
-        const paymentMethod = {
+        const payment_method = {
             name,
             cycleType,
             cycleStart,
@@ -56,7 +56,7 @@ function AddPaymentMethodPage() {
 
         // ExpenseApiService.postExpense(expense);
 
-        // Route user to Categories page
+        // Route user to new payment method page
         history.push("/payment-methods");
 
         // Post user registration info
@@ -79,10 +79,8 @@ function AddPaymentMethodPage() {
         //     });
     }
 
-    // let cycleDays = '';
-
     return (
-        <section>
+        <section id='NewPayment_methodPage' className='route_page'>
             <header role='banner'>
                 <h1>Add Budget Category</h1>
             </header>
@@ -93,7 +91,7 @@ function AddPaymentMethodPage() {
             >
                 <div>
                     {/* <!-- Add logic to check if name already exists --> */}
-                    <label for='category'>Name</label>
+                    <label htmlFor='category'>Name</label>
                     <input
                         type='text'
                         name='name'
@@ -103,7 +101,7 @@ function AddPaymentMethodPage() {
                     />
                 </div>
                 <div>
-                    <label for='type'>Cycle Type</label>
+                    <label htmlFor='type'>Cycle Type</label>
                     <select
                         name='cycleType'
                         id='cycleType'
@@ -118,13 +116,13 @@ function AddPaymentMethodPage() {
 
                 <div
                     className={
-                        paymentMethodData.cycleType === "monthly"
+                        payment_methodData.cycleType === "monthly"
                             ? "hidden"
                             : ""
                     }
                 >
                     <div>
-                        <label for='cycleStart'>Cycle Start Day</label>
+                        <label htmlFor='cycleStart'>Cycle Start Day</label>
                         <input
                             type='number'
                             name='cycleStart'
@@ -138,7 +136,7 @@ function AddPaymentMethodPage() {
                         />
                     </div>
                     <div>
-                        <label for='cycleEnd'>Cycle End Day</label>
+                        <label htmlFor='cycleEnd'>Cycle End Day</label>
                         <input
                             type='number'
                             name='cycleEnd'
@@ -158,7 +156,7 @@ function AddPaymentMethodPage() {
                         <input type="checkbox" name="rolling" id="rolling" />
                     </div> --> */}
                 <div>
-                    <label for='description'>Description (Optional)</label>
+                    <label htmlFor='description'>Description (Optional)</label>
                     <br />
                     <input
                         type='text'
@@ -172,5 +170,3 @@ function AddPaymentMethodPage() {
         </section>
     );
 }
-
-export default AddPaymentMethodPage;

@@ -48,7 +48,7 @@ function ExpenseLogPage() {
     );
 
     return (
-        <section className='ExpenseLogPage'>
+        <section id='ExpenseLogPage' className='route_page'>
             <header role='banner'>
                 <h1>Expense Log</h1>
                 <SimpleTable columns={columns} data={data} />

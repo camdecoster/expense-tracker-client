@@ -4,11 +4,11 @@ import { NavLink } from "react-router-dom";
 
 // Configuration
 import "./SideBar.css";
-import TrackerContext from "../../contexts/TrackerContext";
+// import TrackerContext from "../../contexts/TrackerContext";
 import TokenService from "../../services/token-service";
 
 class SideBar extends Component {
-    static contextType = TrackerContext;
+    // static contextType = TrackerContext;
 
     // state = {};
 

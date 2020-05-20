@@ -6,6 +6,7 @@ import React, { useState, useEffect, useContext } from "react";
 import "./DashboardPage.css";
 import TrackerContext from "../../contexts/TrackerContext";
 import dummyData from "../../dummyData";
+import CategoryApiService from "../../services/category-api-service";
 
 // Components
 import SimpleTable from "../../components/SimpleTable/SimpleTable";
@@ -37,22 +38,6 @@ function firstLetterUppercase(stringToChange) {
     if (typeof stringToChange !== "string") return "";
     return stringToChange.charAt(0).toUpperCase() + stringToChange.slice(1);
 }
-
-// Create link to change interval
-// function IntervalChangeLink(props) {
-//     return (
-//         <a
-//             className={
-//                 props.spendingInterval === props.interval
-//                     ? "interval intervalActive"
-//                     : "interval"
-//             }
-//             onClick={() => props.setSpendingInterval(props.interval)}
-//         >
-//             {firstLetterUppercase(props.interval) + "ly"}
-//         </a>
-//     );
-// }
 
 function DashboardPage() {
     // Access context
@@ -153,7 +138,7 @@ function DashboardPage() {
     );
 
     return (
-        <section id='DashboardPage'>
+        <section id='DashboardPage' className='route_page'>
             <header role='banner'>
                 <h2>Expenses Dashboard</h2>
             </header>

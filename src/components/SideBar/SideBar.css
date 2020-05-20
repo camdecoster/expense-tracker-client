@@ -11,11 +11,6 @@
     background-color: inherit;
 }
 
-#SideBar a {
-    display: block;
-    transition: 0.3s;
-}
-
 #SideBar.open {
     left: 0;
 }

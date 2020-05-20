@@ -84,7 +84,7 @@ class AddExpensePage extends Component {
 
     render() {
         return (
-            <section id='AddExpensePage'>
+            <section id='AddExpensePage' className='route_page'>
                 <header role='banner'>
                     <h1>Add Expense</h1>
                 </header>

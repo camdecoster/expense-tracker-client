@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-// import "./ErrorItem.css";
+import "./ErrorBoundary.css";
 
-class ErrorItem extends Component {
+export default class ErrorBoundary extends Component {
     static defaultProps = {
         message: `Something didn't load correctly`,
     };
@@ -30,8 +30,6 @@ class ErrorItem extends Component {
     }
 }
 
-ErrorItem.propTypes = {
+ErrorBoundary.propTypes = {
     message: PropTypes.string.isRequired,
 };
-
-export default ErrorItem;

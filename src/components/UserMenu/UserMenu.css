@@ -8,4 +8,5 @@
     /* align-items: center; */
     background-color: var(--blue-light);
     border: 1px solid var(--blue-medium);
+    white-space: nowrap;
 }

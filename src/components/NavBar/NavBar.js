@@ -16,7 +16,7 @@ import TokenService from "../../services/token-service";
 // Components
 import UserMenu from "../UserMenu/UserMenu";
 
-class NavBar extends Component {
+export default class NavBar extends Component {
     static contextType = TrackerContext;
 
     renderAddExpense = () => {
@@ -41,15 +41,10 @@ class NavBar extends Component {
                     <button
                         className='buttonShowNav'
                         onClick={() => {
-                            this.context.toggleClassNames(
-                                "classNamesSideBar",
-                                "open"
-                            );
-                            // console.log("SideBar classes changed?");
-                            this.context.toggleClassNames(
-                                "classNamesContainerPage",
-                                "nav_open"
-                            );
+                            this.context.toggleClassNames({
+                                App_container_page: "nav_open",
+                                SideBar: "open",
+                            });
                         }}
                     >
                         <FontAwesomeIcon className='faIcon' icon={faBars} />
@@ -82,5 +77,3 @@ class NavBar extends Component {
         );
     }
 }
-
-export default NavBar;
