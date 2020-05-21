@@ -45,12 +45,12 @@ class SideBar extends Component {
                 link: "",
             },
             {
-                name: "Add Expense",
-                link: "add-expense",
+                name: "New Expense",
+                link: "expenses/new",
             },
             {
-                name: "Expense Log",
-                link: "expense-log",
+                name: "Expenses",
+                link: "expenses",
             },
             {
                 name: "Categories",

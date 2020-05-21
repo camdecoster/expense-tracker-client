@@ -1,17 +1,17 @@
 // React
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 
 // Configuration
 import "./App.css";
-// import config from "../../config";
-import TrackerContext from "../../contexts/TrackerContext";
-import ExpenseApiService from "../../services/expense-api-service";
-import TokenService from "../../services/token-service";
 import CategoryApiService from "../../services/category-api-service";
+import ExpenseApiService from "../../services/expense-api-service";
+import PaymentMethodApiService from "../../services/payment_method-api-service";
+import TokenService from "../../services/token-service";
+import TrackerContext from "../../contexts/TrackerContext";
 
 // Components
-import ErrorItem from "../ErrorItem/ErrorItem";
+import ErrorBoundary from "../Utilities/ErrorBoundary/ErrorBoundary";
 import Footer from "../Footer/Footer";
 import NavBar from "../NavBar/NavBar";
 import PrivateRoute from "../Utilities/PrivateRoute/PrivateRoute";
@@ -19,48 +19,46 @@ import PublicOnlyRoute from "../Utilities/PublicOnlyRoute/PublicOnlyRoute";
 import SideBar from "../SideBar/SideBar";
 
 // Routes
-// import NewCategoryPage from "../../routes/Categories/NewCategoryPage/NewCategoryPage";
-import AddExpensePage from "../../routes/AddExpensePage/AddExpensePage";
-// import AddPaymentMethodPage from "../../routes/AddPaymentMethodPage/AddPaymentMethodPage";
+// import NewExpensePage from "../../routes/Expenses/NewExpensePage/NewExpensePage";
 import CategoriesPage from "../../routes/Categories/CategoriesPage/CategoriesPage";
 import DashboardPage from "../../routes/DashboardPage/DashboardPage";
-import ExpenseLogPage from "../../routes/ExpenseLogPage/ExpenseLogPage";
+import ExpensesPage from "../../routes/Expenses/ExpensesPage/ExpensesPage";
 import LandingPage from "../../routes/LandingPage/LandingPage";
 import LoginPage from "../../routes/LoginPage/LoginPage";
-import Payment_methodsPage from "../../routes/Payment_methods/Payment_methodsPage/Payment_methodsPage";
+import PaymentMethodsPage from "../../routes/Payment_methods/PaymentMethodsPage/PaymentMethodsPage";
 import RegistrationPage from "../../routes/RegistrationPage/RegistrationPage";
 
-class App extends Component {
-    state = {
-        categories: [],
-        classNames: {
-            App_container_page: "container_page",
-            SideBar: "",
-        },
-        dateCurrent: new Date(),
-        error: null,
-        expenses: [],
-        loggedIn: false,
-        showSideBar: true,
-        showUserMenu: false,
-        test: false,
-    };
-
-    setTest = (test) => {
-        this.setState({
-            test,
-        });
-    };
+export default function App() {
+    // Initialize state
+    const [categories, setCategories] = useState([]);
+    const [classNames, setClassNames] = useState({
+        App_container_page: "container_page",
+        SideBar: "",
+    });
+    const [dateCurrent, setDateCurrent] = useState(new Date());
+    const [error, setError] = useState(null);
+    const [expenses, setExpenses] = useState([]);
+    const [payment_methods, setPayment_methods] = useState([]);
+    const [showSideBar, setShowSideBar] = useState(false);
+    const [showUserMenu, setShowUserMenu] = useState(false);
 
     // Toggle variable (true becomes false, etc.) for showing an element
-    toggleStateBoolean = (element) => {
-        this.setState({
-            [element]: !this.state[element],
-        });
-    };
+    // FIGURE OUT WAY TO MAKE THIS CALL FUNCTION BY VARIABLE VALUE
+    function toggleStateBoolean(element) {
+        switch (element) {
+            case "showSideBar":
+                setShowSideBar(!showSideBar);
+                break;
+            case "showUserMenu":
+                setShowUserMenu(!showUserMenu);
+                break;
+            default:
+                console.log(`Can't toggle ${element}`);
+        }
+    }
 
     // Toggle classNames for every item in given object
-    toggleClassNames = (classNamesObj) => {
+    function toggleClassNames(classNamesObj) {
         const newClassNames = {};
 
         for (let element in classNamesObj) {
@@ -70,251 +68,186 @@ class App extends Component {
             let classNamesToToggle = classNamesToToggleString.split(" ");
 
             // Split current classNames into array
-            let classNames = this.state.classNames[element].split(" ");
-            // let classNames = this.state[element].split(" ");
+            let localClassNames = classNames[element].split(" ");
 
             // See if each new className is listed or not, toggle it on/off
             classNamesToToggle.forEach((classNameToToggle) => {
-                const classNameFound = classNames.find(
+                const classNameFound = localClassNames.find(
                     (className) => className === classNameToToggle
                 );
                 if (classNameFound) {
-                    classNames = classNames.filter(
+                    // Remove className from array
+                    localClassNames = localClassNames.filter(
                         (className) => className !== classNameToToggle
                     );
                 } else {
-                    classNames.push(classNameToToggle);
+                    // Add className to array
+                    localClassNames.push(classNameToToggle);
                 }
             });
             // Save new classNames for current element
-            newClassNames[element] = classNames.join(" ");
+            newClassNames[element] = localClassNames.join(" ");
+            // updateClassNames(element, localClassNames.join(" "));
         }
 
         // Update classNames for all elements, leave rest as is
-        this.setState({
-            classNames: {
-                ...this.state.classNames,
-                ...newClassNames,
-            },
-        });
-    };
+        updateClassNames(newClassNames);
+    }
 
-    // Save category info in state
-    setCategories = (categories) => {
-        console.log("`setCategories` ran");
-        this.setState({
-            categories,
+    function updateClassNames(newClassNames) {
+        setClassNames({
+            ...classNames,
+            ...newClassNames,
         });
-    };
-
-    setClassNames = (element, classNames) => {
-        this.setState({
-            [element]: classNames,
-        });
-    };
-
-    setLoggedInState = (loggedIn) => {
-        this.setState({
-            loggedIn,
-        });
-    };
+    }
 
     // Get expenses from server (eventually)
-    getExpenses = () => {
-        // fetch statement in the future
-        this.setState({
-            expenses: ExpenseApiService.getExpenses(),
-        });
-    };
+    // function getExpenses() {
+    //     // fetch statement in the future
+    //     setExpenses(ExpenseApiService.getExpenses());
+    // }
 
     // Temp function to add new expenses to state without server
-    addExpense = (expense) => {
-        let expenses = this.state.expenses;
-        expenses.push(expense);
-        this.setState({
-            expenses,
-        });
-    };
+    // function addExpense(expense) {
+    //     let newExpenses = expenses;
+    //     newExpenses.push(expense);
+    //     this.setState({
+    //         expenses,
+    //     });
+    // }
 
-    // MOVE THIS TO DIFFERENT LIFECYCLE STAGE?
-    componentDidMount() {
+    // Get categories from API, store in context
+    useEffect(() => {
         // Only get info from API if user is logged in
         if (TokenService.hasAuthToken()) {
-            // Get categories from API, store in context
             CategoryApiService.getCategories().then((categories) =>
-                this.setCategories(categories)
+                setCategories(categories)
             );
-
-            // Get payment methods from API, store in context
-            // Payment_methodApiService.getPayment_methods().then((payment_methods) =>
-            //     context.setPayment_methods(payment_methods)
-            // );
         }
-        console.log("APP.JS: <App> did mount");
-        this.getExpenses();
-    }
+    }, [JSON.stringify(categories)]);
 
-    render() {
-        const contextValue = {
-            addExpense: this.addExpense,
-            categories: this.state.categories,
-            dateCurrent: this.state.dateCurrent,
-            expenses: this.state.expenses,
-            loggedIn: this.state.loggedIn,
-            setCategories: this.setCategories,
-            setClassNames: this.setClassNames,
-            setLoggedInState: this.setLoggedInState,
-            showNav: this.state.showNav,
-            showUserMenu: this.state.showUserMenu,
-            toggleClassNames: this.toggleClassNames,
-            toggleStateBoolean: this.toggleStateBoolean,
-            setTest: this.setTest,
-            test: this.state.test,
-        };
+    // Get payment methods from API, store in context
+    useEffect(() => {
+        // Only get info from API if user is logged in
+        if (TokenService.hasAuthToken()) {
+            PaymentMethodApiService.getPayment_methods().then(
+                (payment_methods) => setPayment_methods(payment_methods)
+            );
+        }
+    }, [JSON.stringify(payment_methods)]);
 
-        const sideBarElement = this.state.showSideBar ? (
-            <SideBar className={this.state.SideBarClassNames} />
-        ) : (
-            ""
-        );
+    // Get expenses from API, store in context
+    useEffect(() => {
+        // Only get info from API if user is logged in
+        if (TokenService.hasAuthToken()) {
+            ExpenseApiService.getExpenses().then((expenses) =>
+                setExpenses(expenses)
+            );
+        }
+    }, [JSON.stringify(expenses)]);
 
-        return (
-            <div id='App'>
-                <TrackerContext.Provider value={contextValue}>
-                    <SideBar className={this.state.classNames.SideBar} />
+    const contextValue = {
+        categories: categories,
+        dateCurrent: dateCurrent,
+        expenses: expenses,
+        payment_methods: payment_methods,
+        setCategories: setCategories,
+        setClassNames: setClassNames,
+        setExpenses: setExpenses,
+        setPayment_methods: setPayment_methods,
+        showUserMenu: showUserMenu,
+        toggleClassNames: toggleClassNames,
+        toggleStateBoolean: toggleStateBoolean,
+    };
 
-                    <section
-                        id='container_page'
-                        className={this.state.classNames.App_container_page}
-                    >
-                        <NavBar />
-                        <main>
-                            <Switch>
-                                <Route
-                                    exact
-                                    path='/'
-                                    render={(routerProps) => (
-                                        <ErrorItem
-                                            message={
-                                                TokenService.hasAuthToken()
-                                                    ? `Couldn't load Dashboard page`
-                                                    : `Couldn't load Landing page`
-                                            }
-                                        >
-                                            {TokenService.hasAuthToken() ? (
-                                                <DashboardPage />
-                                            ) : (
-                                                <LandingPage />
-                                            )}
-                                        </ErrorItem>
-                                    )}
-                                />
-                                <PublicOnlyRoute
-                                    path='/register'
-                                    render={(routerProps) => (
-                                        <ErrorItem
-                                            message={`Couldn't load Registration page`}
-                                        >
-                                            <RegistrationPage
-                                                {...routerProps}
-                                            />
-                                        </ErrorItem>
-                                    )}
-                                />
-                                <Route
-                                    exact
-                                    path='/login'
-                                    render={(routerProps) => (
-                                        <ErrorItem
-                                            message={`Couldn't load Login page`}
-                                        >
-                                            <LoginPage />
-                                        </ErrorItem>
-                                    )}
-                                />
-                                <PrivateRoute
-                                    path='/add-expense'
-                                    render={(routerProps) => (
-                                        <ErrorItem
-                                            message={`Couldn't load Add Expense page`}
-                                        >
-                                            <AddExpensePage {...routerProps} />
-                                        </ErrorItem>
-                                    )}
-                                />
-                                <PrivateRoute
-                                    path='/expense-log'
-                                    render={(routerProps) => (
-                                        <ErrorItem
-                                            message={`Couldn't load Expense Log page`}
-                                        >
-                                            <ExpenseLogPage {...routerProps} />
-                                        </ErrorItem>
-                                    )}
-                                />
-                                <PrivateRoute
-                                    path='/categories'
-                                    render={(routerProps) => (
-                                        <ErrorItem
-                                            message={`Couldn't load Categories page`}
-                                        >
-                                            <CategoriesPage {...routerProps} />
-                                        </ErrorItem>
-                                    )}
-                                />
-                                {/* <Route
-                                    path='/categories'
-                                    render={(routerProps) => (
-                                        <ErrorItem
-                                            message={`Couldn't load Categories page`}
-                                        >
-                                            <CategoriesPage {...routerProps} />
-                                        </ErrorItem>
-                                    )}
-                                /> */}
-                                {/* <PrivateRoute
-                                    path='/add-category'
-                                    render={(routerProps) => (
-                                        <ErrorItem
-                                            message={`Couldn't load Add Category page`}
-                                        >
-                                            <NewCategoryPage {...routerProps} />
-                                        </ErrorItem>
-                                    )}
-                                /> */}
-                                <PrivateRoute
-                                    path='/payment-methods'
-                                    render={(routerProps) => (
-                                        <ErrorItem
-                                            message={`Couldn't load Payment Methods page`}
-                                        >
-                                            <Payment_methodsPage
-                                                {...routerProps}
-                                            />
-                                        </ErrorItem>
-                                    )}
-                                />
-                                {/* <PrivateRoute
-                                    path='/add-payment-method'
-                                    render={(routerProps) => (
-                                        <ErrorItem
-                                            message={`Couldn't load Add Payment Method page`}
-                                        >
-                                            <AddPaymentMethodPage
-                                                {...routerProps}
-                                            />
-                                        </ErrorItem>
-                                    )}
-                                /> */}
-                                {/* NEED TO ADD NOT FOUND PAGE */}
-                            </Switch>
-                        </main>
-                        <Footer />
-                    </section>
-                </TrackerContext.Provider>
-            </div>
-        );
-    }
+    return (
+        <div id='App'>
+            <TrackerContext.Provider value={contextValue}>
+                <SideBar className={classNames.SideBar} />
+
+                <section
+                    id='container_page'
+                    className={classNames.App_container_page}
+                >
+                    <NavBar />
+                    <main>
+                        <Switch>
+                            <Route
+                                exact
+                                path='/'
+                                render={(routerProps) => (
+                                    <ErrorBoundary
+                                        message={
+                                            TokenService.hasAuthToken()
+                                                ? `Couldn't load Dashboard page`
+                                                : `Couldn't load Landing page`
+                                        }
+                                    >
+                                        {TokenService.hasAuthToken() ? (
+                                            <DashboardPage />
+                                        ) : (
+                                            <LandingPage />
+                                        )}
+                                    </ErrorBoundary>
+                                )}
+                            />
+                            <PublicOnlyRoute
+                                path='/register'
+                                render={(routerProps) => (
+                                    <ErrorBoundary
+                                        message={`Couldn't load Registration page`}
+                                    >
+                                        <RegistrationPage {...routerProps} />
+                                    </ErrorBoundary>
+                                )}
+                            />
+                            <Route
+                                exact
+                                path='/login'
+                                render={(routerProps) => (
+                                    <ErrorBoundary
+                                        message={`Couldn't load Login page`}
+                                    >
+                                        <LoginPage />
+                                    </ErrorBoundary>
+                                )}
+                            />
+                            <PrivateRoute
+                                path='/expenses'
+                                render={(routerProps) => (
+                                    <ErrorBoundary
+                                        message={`Couldn't load Expense Log page`}
+                                    >
+                                        <ExpensesPage {...routerProps} />
+                                    </ErrorBoundary>
+                                )}
+                            />
+                            <PrivateRoute
+                                path='/categories'
+                                render={(routerProps) => (
+                                    <ErrorBoundary
+                                        message={`Couldn't load Categories page`}
+                                    >
+                                        <CategoriesPage {...routerProps} />
+                                    </ErrorBoundary>
+                                )}
+                            />
+                            <PrivateRoute
+                                path='/payment-methods'
+                                render={(routerProps) => (
+                                    <ErrorBoundary
+                                        message={`Couldn't load Payment Methods page`}
+                                    >
+                                        <PaymentMethodsPage {...routerProps} />
+                                    </ErrorBoundary>
+                                )}
+                            />
+                            {/* NEED TO ADD NOT FOUND PAGE */}
+                        </Switch>
+                    </main>
+                    <Footer />
+                </section>
+            </TrackerContext.Provider>
+        </div>
+    );
 }
-
-export default App;

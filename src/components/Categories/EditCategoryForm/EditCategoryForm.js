@@ -1,5 +1,5 @@
 // React
-import React, { useContext, useParams, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 // import { useRouteMatch } from "react-router-dom";
 
 // Configuration
@@ -14,22 +14,28 @@ export default function EditCategoryForm(props) {
     // Access context
     const context = useContext(TrackerContext);
 
-    // Get category ID from props
-    const { id } = props;
-
     // Get category with given ID
     // If ID doesn't exist, use empty object
-    const category =
-        context.categories.filter(
-            (category) => category.id === parseInt(id)
-        )[0] || {};
-
-    // Access history
-    // const history = useHistory();
+    // const category =
+    //     context.categories.filter(
+    //         (category) => category.id === parseInt(id)
+    //     )[0] || {};
 
     // Initialize state
     const [error, setError] = useState(null);
     const [allowEdit, setAllowEdit] = useState(false);
+    const [category, setCategory] = useState({});
+
+    // Get category from API, store in context
+    useEffect(() => {
+        CategoryApiService.getCategory(id).then((category) =>
+            setCategory(category)
+        );
+        // setDefaultType(category.type);
+    }, [JSON.stringify(category)]);
+
+    // Get category ID from props
+    const { id } = props;
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -101,15 +107,22 @@ export default function EditCategoryForm(props) {
             </div>
             <div>
                 <label htmlFor='type'>Budget Type</label>
-                <select
-                    name='type'
-                    id='type'
-                    defaultValue={category.type}
-                    disabled={!allowEdit}
-                >
-                    <option value='monthly'>Monthly</option>
-                    <option value='quarterly'>Quarterly</option>
-                    <option value='annual'>Annual</option>
+                <select name='type' id='type' disabled={!allowEdit}>
+                    <option
+                        value='monthly'
+                        selected={category.type === "monthly"}
+                    >
+                        Monthly
+                    </option>
+                    <option
+                        value='quarterly'
+                        selected={category.type === "quarterly"}
+                    >
+                        Quarterly
+                    </option>
+                    <option value='yearly' selected={category.type === ""}>
+                        Yearly
+                    </option>
                 </select>
             </div>
             <div>

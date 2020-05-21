@@ -3,14 +3,12 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 
 // Configuration
-import "./NewCategoryPage.css";
-// import TrackerContext from "../../contexts/TrackerContext";
-// import ExpenseApiService from "../../services/expense-api-service";
+import "./NewPaymentMethodPage.css";
 
 // Components
-import NewCategoryForm from "../../../components/Categories/NewCategoryForm/NewCategoryForm";
+import NewPaymentMethodForm from "../../../components/Payment_methods/NewPaymentMethodForm/NewPaymentMethodForm";
 
-function NewCategoryPage() {
+export default function NewPaymentMethodPage() {
     // Access context
     // const context = useContext(TrackerContext);
 
@@ -23,20 +21,18 @@ function NewCategoryPage() {
     }
 
     function handleFormCancel() {
-        history.push("/categories");
+        history.push("/payment-methods");
     }
 
     return (
-        <section id='NewCategoryPage' className='route_page'>
+        <section id='NewPaymentMethodPage' className='route_page'>
             <header role='banner'>
-                <h2>Add New Budget Category</h2>
+                <h2>Add New Payment Method</h2>
             </header>
-            <NewCategoryForm
+            <NewPaymentMethodForm
                 onCancel={handleFormCancel}
                 onLoginSuccess={handleFormSuccess}
             />
         </section>
     );
 }
-
-export default NewCategoryPage;

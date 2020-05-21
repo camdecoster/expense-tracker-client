@@ -2,10 +2,10 @@
 import config from "../config";
 import TokenService from "./token-service";
 
-const ExpenseApiService = {
-    async getExpenses() {
+const PaymentMethodApiService = {
+    async getPayment_methods() {
         try {
-            const res = await fetch(`${config.API_ENDPOINT}/expenses`, {
+            const res = await fetch(`${config.API_ENDPOINT}/payment-methods`, {
                 headers: {
                     Authorization: `bearer ${TokenService.getAuthToken()}`,
                 },
@@ -15,7 +15,7 @@ const ExpenseApiService = {
                 const response = await res.json();
                 throw new Error(
                     response.error.message ||
-                        "There was an error getting the expenses"
+                        "There was an error getting the payment methods"
                 );
             }
             return await res.json();
@@ -23,9 +23,9 @@ const ExpenseApiService = {
             throw new Error(error.message);
         }
     },
-    async getExpense(expenseId) {
+    async getPayment_method(payment_methodId) {
         const res = await fetch(
-            `${config.API_ENDPOINT}/expenses/${expenseId}`,
+            `${config.API_ENDPOINT}/payment-methods/${payment_methodId}`,
             {
                 headers: {
                     authorization: `bearer ${TokenService.getAuthToken()}`,
@@ -38,21 +38,21 @@ const ExpenseApiService = {
             const response = await res.json();
             throw new Error(
                 response.error.message ||
-                    "There was an error getting the expense"
+                    "There was an error getting the payment method"
             );
         }
 
         return await res.json();
     },
-    async postExpense(expense) {
+    async postPayment_method(payment_method) {
         try {
-            const res = await fetch(`${config.API_ENDPOINT}/expenses`, {
+            const res = await fetch(`${config.API_ENDPOINT}/payment-methods`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json",
                     authorization: `bearer ${TokenService.getAuthToken()}`,
                 },
-                body: JSON.stringify(expense),
+                body: JSON.stringify(payment_method),
             });
 
             // If response was bad, throw error
@@ -60,29 +60,29 @@ const ExpenseApiService = {
                 const response = await res.json();
                 throw new Error(
                     response.error.message ||
-                        "There was an error creating the expense"
+                        "There was an error creating the payment method"
                 );
             }
 
             return {
-                expense: await res.json(),
+                payment_method: await res.json(),
                 path: res.headers.get("Location"),
             };
         } catch (error) {
             throw new Error(error.message);
         }
     },
-    async updateExpense(expense) {
+    async updatePayment_method(payment_method) {
         try {
             const res = await fetch(
-                `${config.API_ENDPOINT}/expenses/${expense.id}`,
+                `${config.API_ENDPOINT}/payment-methods/${payment_method.id}`,
                 {
                     method: "PATCH",
                     headers: {
                         "content-type": "application/json",
                         Authorization: `bearer ${TokenService.getAuthToken()}`,
                     },
-                    body: JSON.stringify(expense),
+                    body: JSON.stringify(payment_method),
                 }
             );
 
@@ -91,7 +91,7 @@ const ExpenseApiService = {
                 const response = await res.json();
                 throw new Error(
                     response.error.message ||
-                        "There was an error updating the expense"
+                        "There was an error updating the payment method"
                 );
             }
 
@@ -103,4 +103,4 @@ const ExpenseApiService = {
     },
 };
 
-export default ExpenseApiService;
+export default PaymentMethodApiService;

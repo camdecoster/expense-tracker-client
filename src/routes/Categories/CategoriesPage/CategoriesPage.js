@@ -18,7 +18,7 @@ import EditCategoryPage from "../EditCategoryPage/EditCategoryPage";
 import NewCategoryPage from "../NewCategoryPage/NewCategoryPage";
 import SimpleTable from "../../../components/SimpleTable/SimpleTable";
 
-function CategoriesPage() {
+export default function CategoriesPage() {
     // Set state values
     // const [error, setError] = useState(null);
 
@@ -86,7 +86,6 @@ function CategoriesPage() {
                 </Route>
                 <Route path={`${path}/:categoryId`}>
                     <EditCategoryPage />
-                    {/* ADD EDIT OPTION TO CATEGORY PAGE */}
                 </Route>
                 <Route path={path}>
                     <div>
@@ -101,5 +100,3 @@ function CategoriesPage() {
         </section>
     );
 }
-
-export default CategoriesPage;

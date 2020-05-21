@@ -19,9 +19,9 @@ import UserMenu from "../UserMenu/UserMenu";
 export default class NavBar extends Component {
     static contextType = TrackerContext;
 
-    renderAddExpense = () => {
+    renderNewExpense = () => {
         return (
-            <Link to='/add-expense'>
+            <Link to='/expenses/new'>
                 <FontAwesomeIcon
                     className='faPlusCircle faIcon'
                     icon={faPlusCircle}
@@ -55,7 +55,7 @@ export default class NavBar extends Component {
                             <Link to='/'>Expense Tracker</Link>
                         </h3>
                         {TokenService.hasAuthToken()
-                            ? this.renderAddExpense()
+                            ? this.renderNewExpense()
                             : ""}
                     </div>
                     <div className='containerUserMenu'>

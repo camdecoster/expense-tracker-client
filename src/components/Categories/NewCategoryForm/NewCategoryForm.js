@@ -65,9 +65,9 @@ export default function NewCategoryForm(props) {
 
             // Follow successful path
             props.onLoginSuccess(categoryInfo.path);
-        } catch (res) {
-            console.log(res.error);
-            setError(res.error);
+        } catch (error) {
+            console.log(error.message);
+            setError(error.message);
         }
     }
 
@@ -114,6 +114,9 @@ export default function NewCategoryForm(props) {
                 <input type='text' name='description' id='description' />
             </div>
             <button type='submit'>Add Category</button>
+            <button type='button' onClick={() => props.onCancel()}>
+                Cancel
+            </button>
             {error ? <ErrorMessage message={error} /> : ""}
         </form>
     );

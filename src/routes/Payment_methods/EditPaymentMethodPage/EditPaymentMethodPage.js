@@ -3,14 +3,14 @@ import React, { useContext } from "react";
 import { Link, useRouteMatch, useHistory, useParams } from "react-router-dom";
 
 // Configuration
-import "./EditCategoryPage.css";
+import "./EditPaymentMethodPage.css";
 import TrackerContext from "../../../contexts/TrackerContext";
 
 // Components
-import EditCategoryForm from "../../../components/Categories/EditCategoryForm/EditCategoryForm";
+import EditPaymentMethodForm from "../../../components/Payment_methods/EditPaymentMethodForm/EditPaymentMethodForm";
 
-// Show form to edit category
-export default function EditCategoryPage() {
+// Show form to edit payment method
+export default function EditPaymentMethodPage() {
     // Access context
     const context = useContext(TrackerContext);
 
@@ -20,26 +20,26 @@ export default function EditCategoryPage() {
     // Get path info from Route
     const { path, url } = useRouteMatch();
 
-    // Get category ID from path parameter
-    const { categoryId } = useParams();
+    // Get payment method ID from path parameter
+    const { payment_methodId } = useParams();
 
     function handleFormCancel() {
-        history.push("/categories");
+        history.push("/payment-methods");
     }
 
     function handleFormSuccess() {
-        // Route user to new category
+        // Route user to new payment method
         history.push(url);
     }
 
     return (
-        <section id='EditCategoryPage'>
+        <section id='EditPaymentMethodPage'>
             <header role='banner'>
-                <h1>Edit Category</h1>
+                <h1>Edit Payment Method</h1>
             </header>
-            <Link to='/categories'>Back to all categories</Link>
-            <EditCategoryForm
-                id={categoryId}
+            <Link to='/payment-methods'>Back to all payment methods</Link>
+            <EditPaymentMethodForm
+                id={payment_methodId}
                 onCancel={handleFormCancel}
                 onLoginSuccess={handleFormSuccess}
             />
