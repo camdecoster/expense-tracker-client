@@ -1,5 +1,5 @@
 // React
-import React, { useContext } from "react";
+import React from "react";
 import { Link, useRouteMatch, useHistory, useParams } from "react-router-dom";
 
 // Configuration
@@ -11,14 +11,11 @@ import EditExpenseForm from "../../../components/Expenses/EditExpenseForm/EditEx
 
 // Show form to edit expense
 export default function EditExpensePage() {
-    // Access context
-    const context = useContext(TrackerContext);
-
     // Access history
     const history = useHistory();
 
     // Get path info from Route
-    const { path, url } = useRouteMatch();
+    const { url } = useRouteMatch();
 
     // Get element ID from path parameter
     const { expenseId } = useParams();

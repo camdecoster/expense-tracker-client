@@ -40,6 +40,15 @@ export default function NewExpenseForm(props) {
         )
     );
 
+    // Create defaultDate for date input defaultValue
+    function defaultDate() {
+        const dateParts = new Date().toLocaleDateString("en-GB").split("/");
+        const yyyy = dateParts[2];
+        const mm = dateParts[1];
+        const dd = dateParts[0];
+        return `${yyyy}-${mm}-${dd}`;
+    }
+
     async function handleSubmit(event) {
         event.preventDefault();
 
@@ -122,7 +131,13 @@ export default function NewExpenseForm(props) {
             </div>
             <div>
                 <label htmlFor='date'>Date</label>
-                <input type='date' id='date' name='date' required />
+                <input
+                    type='date'
+                    id='date'
+                    name='date'
+                    defaultValue={defaultDate()}
+                    required
+                />
             </div>
             <div>
                 <label htmlFor='payee'>Payee</label>

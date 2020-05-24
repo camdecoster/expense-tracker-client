@@ -28,11 +28,11 @@ export default function CategoriesPage() {
     // Get path info from Route
     const { path, url } = useRouteMatch();
 
-    // Set up info for table
-    // const [categories, setCategories] = useState(context.categories);
-    // console.log("Categories", categories);
-
-    // let data, columns;
+    // Create currency formatter
+    const currencyFormatter = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+    });
 
     const data = React.useMemo(() => context.categories, []);
 
@@ -54,19 +54,25 @@ export default function CategoriesPage() {
                         id: "budgetMonthly",
                         Header: "Monthly",
                         accessor: (row) =>
-                            row.type === "monthly" ? row.amount : "-",
+                            row.type === "monthly"
+                                ? currencyFormatter.format(row.amount)
+                                : "-",
                     },
                     {
                         id: "budgetQuarterly",
                         Header: "Quarterly",
                         accessor: (row) =>
-                            row.type === "quarterly" ? row.amount : "-",
+                            row.type === "quarterly"
+                                ? currencyFormatter.format(row.amount)
+                                : "-",
                     },
                     {
                         id: "budgetYearly",
                         Header: "Yearly",
                         accessor: (row) =>
-                            row.type === "yearly" ? row.amount : "-",
+                            row.type === "yearly"
+                                ? currencyFormatter.format(row.amount)
+                                : "-",
                     },
                 ],
             },

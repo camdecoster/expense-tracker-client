@@ -1,6 +1,5 @@
 // React
 import React, { useContext, useState, useEffect } from "react";
-// import { useRouteMatch } from "react-router-dom";
 
 // Configuration
 import "./EditPaymentMethodForm.css";
@@ -25,6 +24,7 @@ export default function EditPaymentMethodForm(props) {
         cycle_end: 31,
         description: "",
     });
+    const [cycleDatesClassName, setCycleDatesClassName] = useState("hidden");
 
     function handleInputChange(event) {
         const { id, value } = event.target;
@@ -39,6 +39,7 @@ export default function EditPaymentMethodForm(props) {
         PaymentMethodApiService.getPayment_method(id).then((payment_method) =>
             setPayment_method(payment_method)
         );
+        if (payment_method.cycle_type === "offset") setCycleDatesClassName("");
     }, [JSON.stringify(payment_method)]);
 
     // Get payment method ID from props
@@ -108,7 +109,7 @@ export default function EditPaymentMethodForm(props) {
                     name='payment_method_name'
                     id='payment_method_name'
                     onChange={(event) => handleInputChange(event)}
-                    defaultValue={payment_method.payment_method_name || ""}
+                    defaultValue={payment_method.payment_method_name}
                     disabled={!allowEdit}
                     required
                 />
@@ -136,12 +137,7 @@ export default function EditPaymentMethodForm(props) {
                     </option>
                 </select>
             </div>
-            {/* NEED TO FIX CYCLE START/END SHOWING DURING EDIT */}
-            <div
-                className={
-                    payment_methodData.cycle_type === "monthly" ? "hidden" : ""
-                }
-            >
+            <div className={cycleDatesClassName}>
                 <div>
                     <label htmlFor='cycle_start'>Cycle Start Day</label>
                     <input
@@ -152,7 +148,7 @@ export default function EditPaymentMethodForm(props) {
                         max='31'
                         // How should I handle months with less than 31 days?
                         onChange={(event) => handleInputChange(event)}
-                        defaultValue={payment_method.cycle_start || "1"}
+                        defaultValue={payment_method.cycle_start}
                         disabled={!allowEdit}
                         required
                     />
@@ -167,7 +163,7 @@ export default function EditPaymentMethodForm(props) {
                         max='31'
                         // How should I handle months with less than 31 days?
                         onChange={(event) => handleInputChange(event)}
-                        defaultValue={payment_method.cycle_end || "31"}
+                        defaultValue={payment_method.cycle_end}
                         disabled={!allowEdit}
                         required
                     />
@@ -182,7 +178,7 @@ export default function EditPaymentMethodForm(props) {
                     id='description'
                     onChange={(event) => handleInputChange(event)}
                     disabled={!allowEdit}
-                    defaultValue={payment_method.description || ""}
+                    defaultValue={payment_method.description}
                 />
             </div>
             {allowEdit || (

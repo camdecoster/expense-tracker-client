@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ErrorItem> component renders the UI with the default message (no message given) 1`] = `
+exports[`<ErrorBoundary> component renders the UI with the default message (no message given) 1`] = `
 <h3
   className="errorMessage"
 >
@@ -10,7 +10,7 @@ exports[`<ErrorItem> component renders the UI with the default message (no messa
 </h3>
 `;
 
-exports[`<ErrorItem> component renders the UI with the given message 1`] = `
+exports[`<ErrorBoundary> component renders the UI with the given message 1`] = `
 <h3
   className="errorMessage"
 >

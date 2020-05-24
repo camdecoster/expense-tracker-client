@@ -1,5 +1,5 @@
 // React
-import React, { useContext } from "react";
+import React from "react";
 import { Link, useRouteMatch, useHistory, useParams } from "react-router-dom";
 
 // Configuration
@@ -11,14 +11,11 @@ import EditPaymentMethodForm from "../../../components/Payment_methods/EditPayme
 
 // Show form to edit payment method
 export default function EditPaymentMethodPage() {
-    // Access context
-    const context = useContext(TrackerContext);
-
     // Access history
     const history = useHistory();
 
     // Get path info from Route
-    const { path, url } = useRouteMatch();
+    const { url } = useRouteMatch();
 
     // Get payment method ID from path parameter
     const { payment_methodId } = useParams();

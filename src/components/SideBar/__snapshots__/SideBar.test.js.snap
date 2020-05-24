@@ -56,19 +56,19 @@ exports[`<SideBar> component renders the UI renders the authorized UI 1`] = `
     <li>
       <a
         aria-current={null}
-        href="/add-expense"
+        href="/expenses/new"
         onClick={[Function]}
       >
-        Add Expense
+        New Expense
       </a>
     </li>
     <li>
       <a
         aria-current={null}
-        href="/expense-log"
+        href="/expenses"
         onClick={[Function]}
       >
-        Expense Log
+        Expenses
       </a>
     </li>
     <li>

@@ -1,6 +1,6 @@
 // React
-import React, { useContext } from "react";
-import { Link, useRouteMatch, useHistory, useParams } from "react-router-dom";
+import React from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
 
 // Configuration
 import "./NewExpensePage.css";
@@ -11,14 +11,11 @@ import NewExpenseForm from "../../../components/Expenses/NewExpenseForm/NewExpen
 
 // Show form to edit expense
 export default function EditExpensePage() {
-    // Access context
-    const context = useContext(TrackerContext);
-
     // Access history
     const history = useHistory();
 
     // Get path info from Route
-    const { path, url } = useRouteMatch();
+    // const { path, url } = useRouteMatch();
 
     // Get element ID from path parameter
     const { expenseId } = useParams();

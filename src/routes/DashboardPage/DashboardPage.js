@@ -5,33 +5,10 @@ import React, { useState, useEffect, useContext } from "react";
 // Configuration
 import "./DashboardPage.css";
 import TrackerContext from "../../contexts/TrackerContext";
-import dummyData from "../../dummyData";
-import CategoryApiService from "../../services/category-api-service";
 
 // Components
-import SimpleTable from "../../components/SimpleTable/SimpleTable";
-
-// Get spending data from expenses
-// Return dummy data for now
-function getExpenseData(spendingInterval, data) {
-    const { month, quarter, year } = dummyData;
-
-    switch (spendingInterval) {
-        case "month":
-            return month[data];
-        // break;
-        case "quarter":
-            return quarter[data];
-        // break;
-        case "year":
-            return year[data];
-        // break;
-        default:
-            throw new Error(
-                "Wrong interval given. Interval must be month, quarter, or year."
-            );
-    }
-}
+import CategoryExpensesTable from "../../components/Tables/CategoryExpensesTable/CategoryExpensesTable";
+import PaymentMethodExpensesTable from "../../components/Tables/PaymentMethodExpensesTable/PaymentMethodExpensesTable";
 
 // Make first letter of string uppercase
 function firstLetterUppercase(stringToChange) {
@@ -39,26 +16,22 @@ function firstLetterUppercase(stringToChange) {
     return stringToChange.charAt(0).toUpperCase() + stringToChange.slice(1);
 }
 
-function DashboardPage() {
+export default function DashboardPage() {
     // Access context
     const context = useContext(TrackerContext);
+    const { dateCurrent = new Date() } = context;
 
     // Initialize state
-    const [dateSelected, setDateSelected] = useState(
-        new Date(context.dateCurrent)
-    );
+    const [dateSelected, setDateSelected] = useState(new Date(dateCurrent));
     const [dateString, setDateString] = useState(
         `${dateSelected.toLocaleString("default", {
             month: "long",
         })} ${dateSelected.getFullYear()}`
     );
     const [spendingInterval, setSpendingInterval] = useState("month");
-    const [spendingData, setSpendingData] = useState(
-        React.useMemo(() => getExpenseData("month", "spendingData"), [])
-    );
-    const [paymentMethodData, setPaymentMethodData] = useState(
-        React.useMemo(() => getExpenseData("month", "paymentMethodData"), [])
-    );
+
+    const [categoryTotals, setCategoryTotals] = useState([]);
+    const [payment_methodTotals, setPayment_methodTotals] = useState([]);
 
     // Create link to change interval
     const createIntervalChangeButton = (interval) => {
@@ -76,66 +49,145 @@ function DashboardPage() {
         );
     };
 
-    // Update items after state change
-    useEffect(() => {
-        // Update tables
-        setSpendingData(getExpenseData(spendingInterval, "spendingData"));
-        setPaymentMethodData(
-            getExpenseData(spendingInterval, "paymentMethodData")
-        );
+    // Get categories, payment methods, expenses from context
+    const { categories, payment_methods, expenses } = context;
 
-        // Update date string
+    // Get totals of expenses in each category, payment method
+    useEffect(() => {
+        // Make sure info has been received from API
+        if (categories[0] && payment_methods[0] && expenses[0]) {
+            // Add total item to each category
+            const categoryTotals = categories.map((category) => {
+                return {
+                    ...category,
+                    total: 0,
+                };
+            });
+            // Add total item to each payment method
+            const payment_methodTotals = payment_methods.map(
+                (payment_method) => {
+                    return {
+                        ...payment_method,
+                        total: 0,
+                    };
+                }
+            );
+
+            expenses.forEach((expense) => {
+                // Add up expense info for the selected period of time
+                // Just use monthly for now
+
+                if (spendingInterval === "month") {
+                    const dateExpense = new Date(expense.date);
+
+                    // Check if expense should be added to category total
+                    categoryTotals.forEach((category) => {
+                        if (
+                            expense.category === category.id &&
+                            dateExpense.getMonth() === dateSelected.getMonth()
+                        )
+                            category.total += parseFloat(expense.amount);
+                    });
+                    // Check if expense should be added to payment method total
+                    payment_methodTotals.forEach((payment_method) => {
+                        // Is this payment method linked to this expense?
+                        if (expense.payment_method === payment_method.id) {
+                            // console.log("Expense at", expense.payee);
+                            // console.log(payment_method.payment_method_name);
+
+                            // Check if payment method uses offset cycle
+                            if (payment_method.cycle_type === "offset") {
+                                // console.log("Uses offset cycle");
+                                let cycleStartDate = new Date(dateSelected);
+                                let cycleEndDate = new Date(dateSelected);
+                                // Check if month cycle starts in current month
+                                if (
+                                    dateSelected.getDate() >=
+                                    payment_method.cycle_start
+                                ) {
+                                    // DON'T FORGET TO CHECK FOR DAY FALLING OUTSIDE OF MONTH (like day 31 in February)
+                                    // Get cycle start date and end date, see if expense date is in that range
+
+                                    cycleStartDate.setDate(
+                                        payment_method.cycle_start
+                                    );
+
+                                    cycleEndDate.setMonth(
+                                        dateSelected.getMonth() + 1
+                                    );
+                                    cycleEndDate.setDate(
+                                        payment_method.cycle_end
+                                    );
+                                }
+                                // Else month cycle starts in last month
+                                else {
+                                    // DON'T FORGET TO CHECK FOR DAY FALLING OUTSIDE OF MONTH (like day 31 in February)
+                                    // Get cycle start date and end date, see if expense date is in that range
+                                    // let cycleStartDate = new Date(dateSelected);
+                                    cycleStartDate.setMonth(
+                                        dateSelected.getMonth() - 1
+                                    );
+                                    cycleStartDate.setDate(
+                                        payment_method.cycle_start
+                                    );
+
+                                    cycleEndDate.setDate(
+                                        payment_method.cycle_end
+                                    );
+                                }
+                                // If expense falls in cycle range, add total
+                                if (
+                                    dateExpense >= cycleStartDate &&
+                                    dateExpense <= cycleEndDate
+                                ) {
+                                    // console.log(
+                                    //     "Cycle start date is",
+                                    //     cycleStartDate
+                                    // );
+                                    // console.log(
+                                    //     "Cycle end date is",
+                                    //     cycleEndDate
+                                    // );
+                                    payment_method.total += parseFloat(
+                                        expense.amount
+                                    );
+                                }
+                            }
+                            // If not offset, then it should be monthly
+                            // Add all expenses that are from current month
+                            else if (
+                                dateExpense.getMonth() ===
+                                dateSelected.getMonth()
+                            ) {
+                                // console.log("Uses monthly cycle");
+                                payment_method.total += parseFloat(
+                                    expense.amount
+                                );
+                            }
+                        }
+                    });
+                }
+            });
+
+            setCategoryTotals(categoryTotals);
+            setPayment_methodTotals(payment_methodTotals);
+            // console.log("Checked expenses");
+        }
+    }, [
+        JSON.stringify(categories),
+        JSON.stringify(payment_methods),
+        JSON.stringify(expenses),
+        dateSelected,
+    ]);
+
+    // Update date string after selection changes
+    useEffect(() => {
         setDateString(
             `${dateSelected.toLocaleString("default", {
                 month: "long",
             })} ${dateSelected.getFullYear()}`
         );
-    });
-
-    // Create column headers for spending table
-    const spendingColumns = React.useMemo(
-        () => [
-            {
-                Header: "Category",
-                accessor: "category", // accessor is the "key" in the data
-            },
-            {
-                Header: "Expenses",
-                accessor: "expenses",
-            },
-            {
-                Header: "Budget",
-                accessor: "budget",
-            },
-            {
-                Header: "Remain",
-                accessor: "remain",
-            },
-        ],
-        []
-    );
-
-    // Create column headers for payment methods table
-    const paymentMethodColumns = React.useMemo(
-        () => [
-            {
-                Header: "Method",
-                accessor: "paymentMethod", // accessor is the "key" in the data
-            },
-            {
-                Header: "Expenses",
-                accessor: "expenses",
-            },
-            {
-                Header: "Cycle",
-                accessor: "cycle",
-                Cell: ({ cell: { value } }) => (
-                    <div className='left_align'>{value}</div>
-                ),
-            },
-        ],
-        []
-    );
+    }, [dateSelected]);
 
     return (
         <section id='DashboardPage' className='route_page'>
@@ -143,16 +195,16 @@ function DashboardPage() {
                 <h2>Expenses Dashboard</h2>
             </header>
             <section>
-                <div className='intervalSelector'>
+                {/* <div className='intervalSelector'>
                     {createIntervalChangeButton("month")}
                     {createIntervalChangeButton("quarter")}
                     {createIntervalChangeButton("year")}
-                </div>
+                </div> */}
                 <select
                     name='display-month'
                     id='display-month'
                     onChange={(ev) => {
-                        const tempDate = new Date(context.dateCurrent);
+                        const tempDate = new Date(dateCurrent);
                         tempDate.setMonth(
                             tempDate.getMonth() - parseInt(ev.target.value)
                         );
@@ -173,14 +225,13 @@ function DashboardPage() {
                 <h3>
                     {firstLetterUppercase(spendingInterval) + "ly"} Spending
                 </h3>
-
-                <SimpleTable columns={spendingColumns} data={spendingData} />
+                <CategoryExpensesTable categoryTotals={categoryTotals} />
             </section>
             <section>
                 <h3>Payment Methods</h3>
-                <SimpleTable
-                    columns={paymentMethodColumns}
-                    data={paymentMethodData}
+                <PaymentMethodExpensesTable
+                    dateSelected={dateSelected}
+                    payment_methodTotals={payment_methodTotals}
                 />
             </section>
             <section>
@@ -193,5 +244,3 @@ function DashboardPage() {
         </section>
     );
 }
-
-export default DashboardPage;

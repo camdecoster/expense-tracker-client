@@ -24,7 +24,7 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "predeploy": "npm run build",
-        "deploy": "now --prod ./build"
+        "deploy": "REACT_APP_API_BASE_URL='https://expense-tracker-cdd.herokuapp.com/api' now --prod ./build"
     },
     "eslintConfig": {
         "extends": "react-app"

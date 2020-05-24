@@ -17,7 +17,7 @@ export default function EditExpenseForm(props) {
     const [error, setError] = useState(null);
     const [allowEdit, setAllowEdit] = useState(false);
     const [expense, setExpense] = useState({});
-    // const [defaultCategory, setDefaultCategory] = useState(null);
+    const [defaultCategory, setDefaultCategory] = useState(null);
 
     // Get category ID from props
     const { id } = props;
@@ -28,16 +28,11 @@ export default function EditExpenseForm(props) {
     }, [JSON.stringify(expense)]);
 
     // useEffect(() => {
-    //     setDefaultCategory(
-    //         context.categories.find(
-    //             (category) => category.id === expense.category
-    //         )
-    //             ? context.categories.find(
-    //                   (category) => category.id === expense.category
-    //               ).category_name
-    //             : ""
+    //     const foundCategory = context.categories.find(
+    //         (category) => category.id === expense.category
     //     );
-    // });
+    //     setDefaultCategory(foundCategory ? foundCategory["category_name"] : "");
+    // }, [JSON.stringify(defaultCategory), JSON.stringify(expense)]);
 
     // console.log(
     //     "Category is:",
@@ -55,6 +50,40 @@ export default function EditExpenseForm(props) {
             {category.category_name}
         </option>
     ));
+
+    // const CategorySelect = (props) => {
+    //     const { defaultValue } = props;
+    //     const options = context.categories.map((category) => (
+    //         <option
+    //             key={category.id}
+    //             value={category.id}
+    //             // selected={category.id === expense.category}
+    //         >
+    //             {category.category_name}
+    //         </option>
+    //     ));
+
+    //     if (defaultValue) {
+    //         console.log(defaultValue);
+    //         return (
+    //             <div>
+    //                 <label htmlFor='category'>Category</label>
+    //                 <select
+    //                     name='category'
+    //                     id='category'
+    //                     defaultValue={defaultValue}
+    //                     // defaultValue='Home'
+    //                     disabled={!allowEdit}
+    //                     required
+    //                 >
+    //                     {options}
+    //                 </select>
+    //             </div>
+    //         );
+    //     } else {
+    //         return <div></div>;
+    //     }
+    // };
 
     // Create options for payment method select
     const payment_methodOptions = context.payment_methods.map(
@@ -190,13 +219,14 @@ export default function EditExpenseForm(props) {
                 <select
                     name='category'
                     id='category'
-                    // defaultValue={defaultCagetory || ""}
+                    // defaultValue={defaultCategory}
                     disabled={!allowEdit}
                     required
                 >
                     {categoryOptions}
                 </select>
             </div>
+            {/* <CategorySelect defaultValue={defaultCategory} /> */}
             <div>
                 <label htmlFor='payment_method'>Payment Method</label>
                 <select
