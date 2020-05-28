@@ -1,5 +1,5 @@
 // React
-import React, { Component } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,10 +16,11 @@ import TokenService from "../../services/token-service";
 // Components
 import UserMenu from "../UserMenu/UserMenu";
 
-export default class NavBar extends Component {
-    static contextType = TrackerContext;
+export default function NavBar() {
+    // Access context
+    const context = useContext(TrackerContext);
 
-    renderNewExpense = () => {
+    function renderNewExpense() {
         return (
             <Link to='/expenses/new'>
                 <FontAwesomeIcon
@@ -28,52 +29,48 @@ export default class NavBar extends Component {
                 />
             </Link>
         );
-    };
+    }
 
-    render() {
-        const { showUserMenu } = this.context;
+    const { showUserMenu } = context;
 
-        const userMenuElement = showUserMenu ? <UserMenu /> : "";
+    const userMenuElement = showUserMenu ? <UserMenu /> : "";
 
-        return (
-            <nav role='navigation'>
-                <div className='container_flex'>
+    return (
+        <nav role='navigation'>
+            <div className='container_flex'>
+                <button
+                    className='buttonShowNav'
+                    onClick={() => {
+                        context.toggleClassNames({
+                            App_container_page: "nav_open",
+                            SideBar: "open",
+                        });
+                    }}
+                >
+                    <FontAwesomeIcon className='faIcon' icon={faBars} />
+                </button>
+                {/* Use div below to keep title and plus close together in flex container */}
+                <div>
+                    <h3>
+                        <Link to='/'>Expense Tracker</Link>
+                    </h3>
+                    {TokenService.hasAuthToken() ? renderNewExpense() : ""}
+                </div>
+                <div className='containerUserMenu'>
                     <button
-                        className='buttonShowNav'
+                        className='buttonShowUserMenu'
                         onClick={() => {
-                            this.context.toggleClassNames({
-                                App_container_page: "nav_open",
-                                SideBar: "open",
-                            });
+                            context.toggleStateBoolean("showUserMenu");
                         }}
                     >
-                        <FontAwesomeIcon className='faIcon' icon={faBars} />
+                        <FontAwesomeIcon
+                            className='faIcon'
+                            icon={faUserCircle}
+                        />
                     </button>
-                    {/* Use div below to keep title and plus close together in flex container */}
-                    <div>
-                        <h3>
-                            <Link to='/'>Expense Tracker</Link>
-                        </h3>
-                        {TokenService.hasAuthToken()
-                            ? this.renderNewExpense()
-                            : ""}
-                    </div>
-                    <div className='containerUserMenu'>
-                        <button
-                            className='buttonShowUserMenu'
-                            onClick={() => {
-                                this.context.toggleStateBoolean("showUserMenu");
-                            }}
-                        >
-                            <FontAwesomeIcon
-                                className='faIcon'
-                                icon={faUserCircle}
-                            />
-                        </button>
-                        {userMenuElement}
-                    </div>
+                    {userMenuElement}
                 </div>
-            </nav>
-        );
-    }
+            </div>
+        </nav>
+    );
 }

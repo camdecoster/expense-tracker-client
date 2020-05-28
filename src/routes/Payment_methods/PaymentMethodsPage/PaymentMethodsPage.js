@@ -80,8 +80,15 @@ export default function PaymentMethodsPage() {
                         <header role='banner'>
                             <h1>Payment Methods</h1>
                         </header>
-                        <Link to={`${url}/new`}>Add new method</Link>
-                        <SimpleTable columns={columns} data={data} />
+                        <Link to={`${url}/new`}>Add new payment method</Link>
+                        {context.payment_methods[0] ? (
+                            <SimpleTable columns={columns} data={data} />
+                        ) : (
+                            <div>
+                                After you add some payment methods, they'll
+                                appear on this page.
+                            </div>
+                        )}
                     </div>
                 </Route>
             </Switch>

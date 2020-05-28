@@ -62,7 +62,7 @@ class RegistrationForm extends Component {
                         name='email'
                         id='email'
                         // Only use value for testing
-                        defaultValue='test@test.com'
+                        // defaultValue='test@test.com'
                         required
                     />
                 </div>
@@ -73,7 +73,7 @@ class RegistrationForm extends Component {
                         name='password'
                         id='password'
                         // Only use value for testing
-                        defaultValue='test'
+                        // defaultValue='test'
                         required
                     />
                 </div>

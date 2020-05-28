@@ -1,5 +1,5 @@
 // React
-import React, { Component } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 // Configuration
@@ -7,43 +7,44 @@ import "./UserMenu.css";
 import TrackerContext from "../../contexts/TrackerContext";
 import TokenService from "../../services/token-service";
 
-class UserMenu extends Component {
-    static contextType = TrackerContext;
+export default function UserMenu() {
+    // Access context
+    const context = useContext(TrackerContext);
 
-    handleLogOutClick = () => {
+    function handleLogOutClick() {
         // Clear auth token
         TokenService.clearAuthToken();
 
-        this.handleLinkClick();
+        handleLinkClick();
         // this.context.setLoggedInState(false);
         // ALSO CLEAR EXPENSES IN STATE?
-    };
+    }
 
-    handleLinkClick = () => {
+    function handleLinkClick() {
         // Close user menu
-        this.context.toggleStateBoolean("showUserMenu");
-    };
+        context.toggleStateBoolean("showUserMenu");
+    }
 
-    renderLogInLink = () => {
+    function renderLogInLinks() {
         return (
             <div className='NavBar_not_logged_in'>
                 <ul className='link_list'>
                     <li>
-                        <Link to='/login' onClick={this.handleLinkClick}>
+                        <Link to='/login' onClick={handleLinkClick}>
                             Log In
                         </Link>
                     </li>
                     <li>
-                        <Link to='/register' onClick={this.handleLinkClick}>
+                        <Link to='/register' onClick={handleLinkClick}>
                             Register
                         </Link>
                     </li>
                 </ul>
             </div>
         );
-    };
+    }
 
-    renderLogOutLink = () => {
+    function renderLogOutLinks() {
         return (
             <div className='NavBar_logged_in'>
                 <ul className='link_list'>
@@ -51,24 +52,20 @@ class UserMenu extends Component {
                         <p>Settings</p>
                     </li> */}
                     <li>
-                        <Link to='/' onClick={this.handleLogOutClick}>
+                        <Link to='/' onClick={handleLogOutClick}>
                             Log Out
                         </Link>
                     </li>
                 </ul>
             </div>
         );
-    };
-
-    render() {
-        return (
-            <div id='UserMenu' className='flex_container'>
-                {TokenService.hasAuthToken()
-                    ? this.renderLogOutLink()
-                    : this.renderLogInLink()}
-            </div>
-        );
     }
-}
 
-export default UserMenu;
+    return (
+        <div id='UserMenu' className='flex_container'>
+            {TokenService.hasAuthToken()
+                ? renderLogOutLinks()
+                : renderLogInLinks()}
+        </div>
+    );
+}

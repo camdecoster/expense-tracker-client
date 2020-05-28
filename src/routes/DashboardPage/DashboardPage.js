@@ -1,6 +1,5 @@
 // React
 import React, { useState, useEffect, useContext } from "react";
-// import { NavLink, withRouter } from "react-router-dom";
 
 // Configuration
 import "./DashboardPage.css";
@@ -9,6 +8,8 @@ import TrackerContext from "../../contexts/TrackerContext";
 // Components
 import CategoryExpensesTable from "../../components/Tables/CategoryExpensesTable/CategoryExpensesTable";
 import PaymentMethodExpensesTable from "../../components/Tables/PaymentMethodExpensesTable/PaymentMethodExpensesTable";
+import CategoriesBarChart from "../../components/Charts/CategoriesBarChart/CategoriesBarChart";
+import PaymentMethodsBarChart from "../../components/Charts/PaymentMethodsBarChart/PaymentMethodsBarChart";
 
 // Make first letter of string uppercase
 function firstLetterUppercase(stringToChange) {
@@ -225,22 +226,28 @@ export default function DashboardPage() {
                 <h3>
                     {firstLetterUppercase(spendingInterval) + "ly"} Spending
                 </h3>
-                <CategoryExpensesTable categoryTotals={categoryTotals} />
+                {categoryTotals[0] ? (
+                    <CategoryExpensesTable categoryTotals={categoryTotals} />
+                ) : (
+                    "Add some categories to track your progress"
+                )}
             </section>
+            <CategoriesBarChart date={dateString} categories={categoryTotals} />
             <section>
                 <h3>Payment Methods</h3>
-                <PaymentMethodExpensesTable
-                    dateSelected={dateSelected}
-                    payment_methodTotals={payment_methodTotals}
-                />
+                {payment_methodTotals[0] ? (
+                    <PaymentMethodExpensesTable
+                        dateSelected={dateSelected}
+                        payment_methodTotals={payment_methodTotals}
+                    />
+                ) : (
+                    "Add some payment methods to track your progress"
+                )}
             </section>
-            <section>
-                <p>
-                    [
-                    <em>Placeholder for pie chart showing monthly expenses </em>
-                    ]
-                </p>
-            </section>
+            <PaymentMethodsBarChart
+                date={dateString}
+                payment_methods={payment_methodTotals}
+            />
         </section>
     );
 }

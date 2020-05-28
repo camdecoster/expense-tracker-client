@@ -1,5 +1,6 @@
 // React
 import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 
 // Configuration
 import "./NewExpenseForm.css";
@@ -15,14 +16,6 @@ export default function NewExpenseForm(props) {
 
     // Initialize state
     const [error, setError] = useState(null);
-
-    // function handleInputChange(event) {
-    //     const { id, value } = event.target;
-    //     setCategoryData({
-    //         ...categoryData,
-    //         [id]: value,
-    //     });
-    // }
 
     // Create options for category select
     const categoryOptions = context.categories.map((category) => (
@@ -47,6 +40,80 @@ export default function NewExpenseForm(props) {
         const mm = dateParts[1];
         const dd = dateParts[0];
         return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function showForm() {
+        return (
+            <form
+                className='EditExpenseForm'
+                onSubmit={(event) => handleSubmit(event)}
+            >
+                <div>
+                    <label htmlFor='amount'>Amount</label>
+                    <input
+                        type='number'
+                        name='amount'
+                        id='amount'
+                        min='0'
+                        step='0.01'
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor='type'>Type</label>
+                    <select name='type' id='type' required>
+                        <option value='expense' defaultValue>
+                            Expense
+                        </option>
+                        <option value='credit'>Credit</option>
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor='date'>Date</label>
+                    <input
+                        type='date'
+                        id='date'
+                        name='date'
+                        defaultValue={defaultDate()}
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor='payee'>Payee</label>
+                    {/* Suggest payees based on past inputs */}
+                    <input type='text' name='payee' id='payee' required />
+                </div>
+                <div>
+                    <label htmlFor='category'>Category</label>
+                    <select name='category' id='category' required>
+                        {categoryOptions}
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor='payment_method'>Payment Method</label>
+                    <select name='payment_method' id='payment_method' required>
+                        {payment_methodOptions}
+                    </select>
+                </div>
+                <div>
+                    <label htmlFor='description'>Description (Optional)</label>
+                    <input type='text' name='description' id='description' />
+                </div>
+                <button type='submit'>Add Expense</button>
+                {error ? <ErrorMessage message={error} /> : ""}
+            </form>
+        );
+    }
+
+    function showRedirect() {
+        return (
+            <h4>
+                You need to add a{" "}
+                <Link to='/categories/new'>budget category</Link> and{" "}
+                <Link to='/payment-methods/new'>payment method</Link> before you
+                can add an expense.
+            </h4>
+        );
     }
 
     async function handleSubmit(event) {
@@ -105,63 +172,10 @@ export default function NewExpenseForm(props) {
     }
 
     return (
-        <form
-            className='EditExpenseForm'
-            onSubmit={(event) => handleSubmit(event)}
-        >
-            <div>
-                <label htmlFor='amount'>Amount</label>
-                <input
-                    type='number'
-                    name='amount'
-                    id='amount'
-                    min='0'
-                    step='0.01'
-                    required
-                />
-            </div>
-            <div>
-                <label htmlFor='type'>Type</label>
-                <select name='type' id='type' required>
-                    <option value='expense' defaultValue>
-                        Expense
-                    </option>
-                    <option value='credit'>Credit</option>
-                </select>
-            </div>
-            <div>
-                <label htmlFor='date'>Date</label>
-                <input
-                    type='date'
-                    id='date'
-                    name='date'
-                    defaultValue={defaultDate()}
-                    required
-                />
-            </div>
-            <div>
-                <label htmlFor='payee'>Payee</label>
-                {/* Suggest payees based on past inputs */}
-                <input type='text' name='payee' id='payee' required />
-            </div>
-            <div>
-                <label htmlFor='category'>Category</label>
-                <select name='category' id='category' required>
-                    {categoryOptions}
-                </select>
-            </div>
-            <div>
-                <label htmlFor='payment_method'>Payment Method</label>
-                <select name='payment_method' id='payment_method' required>
-                    {payment_methodOptions}
-                </select>
-            </div>
-            <div>
-                <label htmlFor='description'>Description (Optional)</label>
-                <input type='text' name='description' id='description' />
-            </div>
-            <button type='submit'>Add Expense</button>
-            {error ? <ErrorMessage message={error} /> : ""}
-        </form>
+        <div>
+            {context.categories[0] && context.payment_methods
+                ? showForm()
+                : showRedirect()}
+        </div>
     );
 }

@@ -99,7 +99,14 @@ export default function CategoriesPage() {
                             <h1>Budget Categories</h1>
                         </header>
                         <Link to={`${url}/new`}>Add new category</Link>
-                        <SimpleTable columns={columns} data={data} />
+                        {context.categories[0] ? (
+                            <SimpleTable columns={columns} data={data} />
+                        ) : (
+                            <div>
+                                After you add some categories, they'll appear on
+                                this page.
+                            </div>
+                        )}
                     </div>
                 </Route>
             </Switch>

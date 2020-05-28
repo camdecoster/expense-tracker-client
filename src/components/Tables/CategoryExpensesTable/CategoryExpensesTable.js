@@ -1,6 +1,6 @@
 // React
 import React, { useMemo, useState, useEffect, useContext } from "react";
-// import { NavLink, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Components
 import SimpleTable from "../../SimpleTable/SimpleTable";
@@ -25,7 +25,12 @@ export default function CategoryExpensesTable(props) {
         () => [
             {
                 Header: "Category",
-                accessor: "category_name", // accessor is the "key" in the data
+                // accessor: "category_name", // accessor is the "key" in the data
+                accessor: (row) => (
+                    <Link to={`/categories/${row.id}`}>
+                        {row.category_name}
+                    </Link>
+                ),
             },
             {
                 Header: "Expenses",

@@ -101,21 +101,6 @@ export default function App() {
         });
     }
 
-    // Get expenses from server (eventually)
-    // function getExpenses() {
-    //     // fetch statement in the future
-    //     setExpenses(ExpenseApiService.getExpenses());
-    // }
-
-    // Temp function to add new expenses to state without server
-    // function addExpense(expense) {
-    //     let newExpenses = expenses;
-    //     newExpenses.push(expense);
-    //     this.setState({
-    //         expenses,
-    //     });
-    // }
-
     // Get categories from API, store in context
     useEffect(() => {
         // Only get info from API if user is logged in

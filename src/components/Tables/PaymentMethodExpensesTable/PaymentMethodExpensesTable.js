@@ -1,6 +1,6 @@
 // React
 import React, { useMemo, useState, useEffect, useContext } from "react";
-// import { NavLink, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Components
 import SimpleTable from "../../SimpleTable/SimpleTable";
@@ -25,7 +25,12 @@ export default function PaymentMethodExpensesTable(props) {
         () => [
             {
                 Header: "Method",
-                accessor: "payment_method_name", // accessor is the "key" in the data
+                // accessor: "payment_method_name", // accessor is the "key" in the data
+                accessor: (row) => (
+                    <Link to={`/payment-methods/${row.id}`}>
+                        {row.payment_method_name}
+                    </Link>
+                ),
             },
             {
                 Header: "Expenses",

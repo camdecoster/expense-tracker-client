@@ -5,7 +5,6 @@ import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 // Configuration
 import "./ExpensesPage.css";
 import TrackerContext from "../../../contexts/TrackerContext";
-import dummyData from "../../../dummyData";
 
 // Components
 import EditExpensePage from "../EditExpensePage/EditExpensePage";
@@ -44,7 +43,7 @@ export default function ExpensesPage() {
             },
             {
                 Header: "Date",
-                accessor: (row) => new Date(row.date).toLocaleString(), // Change this to short form of date
+                accessor: (row) => new Date(row.date).toLocaleDateString(), // Change this to short form of date
             },
             {
                 Header: "Payee",
@@ -94,7 +93,14 @@ export default function ExpensesPage() {
                             <h1>Expense Log</h1>
                         </header>
                         <Link to={`${url}/new`}>Add new expense</Link>
-                        <SimpleTable columns={columns} data={data} />
+                        {context.expenses[0] ? (
+                            <SimpleTable columns={columns} data={data} />
+                        ) : (
+                            <div>
+                                After you add some expenses, they'll appear on
+                                this page.
+                            </div>
+                        )}
                     </div>
                 </Route>
             </Switch>

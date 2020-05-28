@@ -1,23 +1,25 @@
 // React
-import React, { Component } from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 
 // Configuration
 import "./SideBar.css";
-// import TrackerContext from "../../contexts/TrackerContext";
 import TokenService from "../../services/token-service";
+import TrackerContext from "../../contexts/TrackerContext";
 
-class SideBar extends Component {
-    // static contextType = TrackerContext;
+export default function SideBar(props) {
+    // Access context
+    const context = useContext(TrackerContext);
 
-    // state = {};
-
-    handleLinkClick = () => {
+    function handleLinkClick() {
         // Close user menu
-        // this.context.toggleStateBoolean("showNav");
-    };
+        context.toggleClassNames({
+            App_container_page: "nav_open",
+            SideBar: "open",
+        });
+    }
 
-    createNavLinkList = (navLinkTargets) => {
+    function createNavLinkList(navLinkTargets) {
         // Build list of NavLinks for <ul> in SideBar
         let navLinks = "";
 
@@ -27,7 +29,7 @@ class SideBar extends Component {
                     <NavLink
                         exact
                         to={"/" + navLink.link}
-                        onClick={this.handleLinkClick}
+                        onClick={handleLinkClick}
                     >
                         {navLink.name}
                     </NavLink>
@@ -36,9 +38,9 @@ class SideBar extends Component {
         });
 
         return navLinks;
-    };
+    }
 
-    renderAuthorized = () => {
+    function renderAuthorized() {
         const navLinkTargets = [
             {
                 name: "Dashboard",
@@ -66,10 +68,10 @@ class SideBar extends Component {
             // },
         ];
 
-        return this.createNavLinkList(navLinkTargets);
-    };
+        return createNavLinkList(navLinkTargets);
+    }
 
-    renderUnauthorized = () => {
+    function renderUnauthorized() {
         const navLinkTargets = [
             {
                 name: "Log In",
@@ -81,23 +83,19 @@ class SideBar extends Component {
             },
         ];
 
-        return this.createNavLinkList(navLinkTargets);
-    };
-
-    render() {
-        return (
-            <div id='SideBar' className={this.props.className}>
-                <h3>Expense Tracker</h3>
-
-                {/* Links and logout should only be shown if user logged in */}
-                <ul className='link_list'>
-                    {TokenService.hasAuthToken()
-                        ? this.renderAuthorized()
-                        : this.renderUnauthorized()}
-                </ul>
-            </div>
-        );
+        return createNavLinkList(navLinkTargets);
     }
-}
 
-export default SideBar;
+    return (
+        <div id='SideBar' className={props.className}>
+            <h3>Expense Tracker</h3>
+
+            {/* Links and logout should only be shown if user logged in */}
+            <ul className='link_list'>
+                {TokenService.hasAuthToken()
+                    ? renderAuthorized()
+                    : renderUnauthorized()}
+            </ul>
+        </div>
+    );
+}
