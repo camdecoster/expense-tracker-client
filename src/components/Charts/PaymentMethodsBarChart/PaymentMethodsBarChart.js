@@ -22,8 +22,10 @@ export default function PaymentMethodsBarChart(props) {
         <section id='PaymentMethodsBarChart'>
             <HorizontalBar
                 data={{
-                    labels: payment_methods.map(
-                        (payment_method) => payment_method.payment_method_name
+                    labels: payment_methods.map((payment_method) =>
+                        payment_method.payment_method_name !== null
+                            ? payment_method.payment_method_name
+                            : "No Payment Method"
                     ),
                     datasets: [
                         {
@@ -83,6 +85,7 @@ export default function PaymentMethodsBarChart(props) {
                                     },
                                 },
                                 gridLines: {
+                                    zeroLineColor: "white",
                                     color: "white",
                                 },
                             },
@@ -93,6 +96,7 @@ export default function PaymentMethodsBarChart(props) {
                                     fontColor: "white",
                                 },
                                 gridLines: {
+                                    zeroLineColor: "white",
                                     display: false,
                                 },
                             },

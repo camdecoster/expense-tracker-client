@@ -9,7 +9,7 @@ import TrackerContext from "../../contexts/TrackerContext";
 // Components
 import LoginForm from "../../components/LoginForm/LoginForm";
 
-export default function LoginPage() {
+export default function LoginPage(props) {
     // Access context
     const context = useContext(TrackerContext);
 
@@ -17,7 +17,10 @@ export default function LoginPage() {
     const history = useHistory();
 
     function handleLoginSuccess() {
-        // SHOULD I GET ACCOUNT INFO (EXPENSES, ETC.) HERE OR IN DASHBOARD?
+        // Trigger fetching of these items by causing rerender
+        context.setCategories([]);
+        context.setPayment_methods([]);
+        context.setExpenses([]);
 
         // Route user to dashboard
         history.push("/");
@@ -28,8 +31,13 @@ export default function LoginPage() {
             <header role='banner'>
                 <h1>Log in to Expense Tracker</h1>
             </header>
+            {!!props.message ? <h2 id='demo_message'>{props.message}</h2> : ""}
 
-            <LoginForm onLoginSuccess={handleLoginSuccess} />
+            <LoginForm
+                onLoginSuccess={handleLoginSuccess}
+                email={props.email}
+                password={props.password}
+            />
         </section>
     );
 }

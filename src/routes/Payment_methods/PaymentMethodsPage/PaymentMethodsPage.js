@@ -5,11 +5,13 @@ import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 // Configuration
 import "./PaymentMethodsPage.css";
 import TrackerContext from "../../../contexts/TrackerContext";
+import { firstLetterUppercase } from "../../../js-utilities";
 
 // Components
+import AddItemLinkButton from "../../../components/Utilities/AddItemLinkButton/AddItemLinkButton";
 import EditPaymentMethodPage from "../EditPaymentMethodPage/EditPaymentMethodPage";
 import NewPaymentMethodPage from "../NewPaymentMethodPage/NewPaymentMethodPage";
-import SimpleTable from "../../../components/SimpleTable/SimpleTable";
+import SimpleTable from "../../../components/Tables/SimpleTable/SimpleTable";
 
 export default function PaymentMethodsPage() {
     // Access context
@@ -34,29 +36,20 @@ export default function PaymentMethodsPage() {
             },
             {
                 Header: "Cycle",
-                columns: [
-                    {
-                        Header: "Type",
-                        accessor: (row) =>
-                            `${
-                                row.cycle_type.slice(0, 1).toUpperCase() +
-                                row.cycle_type.slice(1)
-                            }`,
-                    },
-                    // Show '-' instead of 0 if no cycle start/end set
-                    {
-                        id: "startDay",
-                        Header: "Start Day",
-                        accessor: (row) =>
-                            row.cycle_start !== 0 ? row.cycle_start : "-",
-                    },
-                    {
-                        id: "endDay",
-                        Header: "End Day",
-                        accessor: (row) =>
-                            row.cycle_end !== 0 ? row.cycle_end : "-",
-                    },
-                ],
+                accessor: (payment_method) => {
+                    const {
+                        cycle_type,
+                        cycle_start,
+                        cycle_end,
+                    } = payment_method;
+                    const cycleDays =
+                        cycle_type === "offset"
+                            ? ` (Day ${cycle_start} to Day ${cycle_end})`
+                            : "";
+                    return `${firstLetterUppercase(
+                        payment_method.cycle_type
+                    )}${cycleDays}`;
+                },
             },
             {
                 Header: "Description",
@@ -79,8 +72,12 @@ export default function PaymentMethodsPage() {
                     <div>
                         <header role='banner'>
                             <h1>Payment Methods</h1>
+                            <AddItemLinkButton
+                                to={`${url}/new`}
+                                name='Add New Payment Method'
+                                icon='plus-circle'
+                            />
                         </header>
-                        <Link to={`${url}/new`}>Add new payment method</Link>
                         {context.payment_methods[0] ? (
                             <SimpleTable columns={columns} data={data} />
                         ) : (

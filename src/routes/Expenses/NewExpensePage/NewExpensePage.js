@@ -34,7 +34,7 @@ export default function EditExpensePage() {
             <header role='banner'>
                 <h1>New Expense</h1>
             </header>
-            <Link to='/expenses'>Back to all expenses</Link>
+            {/* <Link to='/expenses'>Back to all expenses</Link> */}
             <NewExpenseForm
                 id={expenseId}
                 onCancel={handleFormCancel}

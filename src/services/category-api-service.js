@@ -3,6 +3,31 @@ import config from "../config";
 import TokenService from "./token-service";
 
 const CategoryApiService = {
+    async deleteCategory(id) {
+        try {
+            const res = await fetch(`${config.API_ENDPOINT}/categories/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "content-type": "application/json",
+                    Authorization: `bearer ${TokenService.getAuthToken()}`,
+                },
+            });
+
+            // If response was bad, throw error
+            if (!res.ok) {
+                const response = await res.json();
+                throw new Error(
+                    response.error.message ||
+                        "There was an error deleting the category"
+                );
+            }
+
+            // No response content will be provided, so just pass response
+            return res;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
     async getCategories() {
         try {
             const res = await fetch(`${config.API_ENDPOINT}/categories`, {

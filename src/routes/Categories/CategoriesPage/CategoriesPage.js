@@ -1,27 +1,19 @@
 // React
 import React, { useContext } from "react";
-import {
-    Link,
-    Route,
-    Switch,
-    useRouteMatch,
-    // useParams,
-} from "react-router-dom";
+import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 
 // Configuration
 import "./CategoriesPage.css";
 import TrackerContext from "../../../contexts/TrackerContext";
-// import CategoryApiService from "../../services/category-api-service";
+import { firstLetterUppercase } from "../../../js-utilities";
 
 // Components
+import AddItemLinkButton from "../../../components/Utilities/AddItemLinkButton/AddItemLinkButton";
 import EditCategoryPage from "../EditCategoryPage/EditCategoryPage";
 import NewCategoryPage from "../NewCategoryPage/NewCategoryPage";
-import SimpleTable from "../../../components/SimpleTable/SimpleTable";
+import SimpleTable from "../../../components/Tables/SimpleTable/SimpleTable";
 
 export default function CategoriesPage() {
-    // Set state values
-    // const [error, setError] = useState(null);
-
     // Access context
     const context = useContext(TrackerContext);
 
@@ -48,33 +40,11 @@ export default function CategoriesPage() {
             },
             {
                 Header: "Budget",
-                columns: [
-                    // Only show budget amount if category is that type
-                    {
-                        id: "budgetMonthly",
-                        Header: "Monthly",
-                        accessor: (row) =>
-                            row.type === "monthly"
-                                ? currencyFormatter.format(row.amount)
-                                : "-",
-                    },
-                    {
-                        id: "budgetQuarterly",
-                        Header: "Quarterly",
-                        accessor: (row) =>
-                            row.type === "quarterly"
-                                ? currencyFormatter.format(row.amount)
-                                : "-",
-                    },
-                    {
-                        id: "budgetYearly",
-                        Header: "Yearly",
-                        accessor: (row) =>
-                            row.type === "yearly"
-                                ? currencyFormatter.format(row.amount)
-                                : "-",
-                    },
-                ],
+                accessor: (category) => {
+                    return `${currencyFormatter.format(
+                        category.amount
+                    )} (${firstLetterUppercase(category.type)})`;
+                },
             },
             {
                 Header: "Description",
@@ -97,8 +67,12 @@ export default function CategoriesPage() {
                     <div>
                         <header role='banner'>
                             <h1>Budget Categories</h1>
+                            <AddItemLinkButton
+                                to={`${url}/new`}
+                                name='Add New Category'
+                                icon='plus-circle'
+                            />
                         </header>
-                        <Link to={`${url}/new`}>Add new category</Link>
                         {context.categories[0] ? (
                             <SimpleTable columns={columns} data={data} />
                         ) : (

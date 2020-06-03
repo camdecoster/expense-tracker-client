@@ -57,16 +57,16 @@ export default function NewCategoryForm(props) {
             amount.value = "";
             description.value = "";
 
+            // Follow successful path
+            props.onLoginSuccess(categoryInfo.path);
+
             // Add new category info to category array in state
             const newCategory = categoryInfo.category;
             const categories = context.categories;
             categories.push(newCategory);
             context.setCategories(categories);
-
-            // Follow successful path
-            props.onLoginSuccess(categoryInfo.path);
         } catch (error) {
-            console.log(error.message);
+            console.error(error.message);
             setError(error.message);
         }
     }
@@ -111,11 +111,11 @@ export default function NewCategoryForm(props) {
                     </div> --> */}
             <div>
                 <label htmlFor='description'>Description (Optional)</label>
-                <input type='text' name='description' id='description' />
+                <textarea name='description' id='description' wrap='soft' />
             </div>
             <button type='submit'>Add Category</button>
             <button type='button' onClick={() => props.onCancel()}>
-                Cancel
+                Go Back
             </button>
             {error ? <ErrorMessage message={error} /> : ""}
         </form>

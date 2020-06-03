@@ -22,8 +22,10 @@ export default function CategoriesBarChart(props) {
         <section id='CategoriesBarChart'>
             <HorizontalBar
                 data={{
-                    labels: categories.map(
-                        (category) => category.category_name
+                    labels: categories.map((category) =>
+                        category.category_name !== null
+                            ? category.category_name
+                            : "Uncategorized"
                     ),
                     datasets: [
                         {
@@ -96,6 +98,7 @@ export default function CategoriesBarChart(props) {
                                     },
                                 },
                                 gridLines: {
+                                    zeroLineColor: "white",
                                     color: "white",
                                 },
                             },
@@ -107,6 +110,7 @@ export default function CategoriesBarChart(props) {
                                     fontColor: "white",
                                 },
                                 gridLines: {
+                                    zeroLineColor: "white",
                                     display: false,
                                 },
                             },

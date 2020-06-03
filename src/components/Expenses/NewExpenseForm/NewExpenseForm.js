@@ -23,6 +23,12 @@ export default function NewExpenseForm(props) {
             {category.category_name}
         </option>
     ));
+    // Add Uncategorized to beginning of select options
+    categoryOptions.unshift(
+        <option key={0} value={"Uncategorized"}>
+            {"Uncategorized"}
+        </option>
+    );
 
     // Create options for payment method select
     const payment_methodOptions = context.payment_methods.map(
@@ -31,6 +37,12 @@ export default function NewExpenseForm(props) {
                 {payment_method.payment_method_name}
             </option>
         )
+    );
+    // Add No Payment Method to beginning of select options
+    payment_methodOptions.unshift(
+        <option key={0} value={"No Payment Method"}>
+            {"No Payment Method"}
+        </option>
     );
 
     // Create defaultDate for date input defaultValue
@@ -97,9 +109,12 @@ export default function NewExpenseForm(props) {
                 </div>
                 <div>
                     <label htmlFor='description'>Description (Optional)</label>
-                    <input type='text' name='description' id='description' />
+                    <textarea name='description' id='description' wrap='soft' />
                 </div>
                 <button type='submit'>Add Expense</button>
+                <button type='button' onClick={() => props.onCancel()}>
+                    Go Back
+                </button>
                 {error ? <ErrorMessage message={error} /> : ""}
             </form>
         );
@@ -134,17 +149,22 @@ export default function NewExpenseForm(props) {
             type: type.value,
             date: date.value,
             payee: payee.value,
-            category: category.value,
-            payment_method: payment_method.value,
             description: description.value,
         };
+        // Only add category/payment method ID if one has been selected from list
+        category.value !== "Uncategorized"
+            ? (expense.category = parseInt(category.value))
+            : (expense.category = null);
+        payment_method.value !== "No Payment Method"
+            ? (expense.payment_method = parseInt(payment_method.value))
+            : (expense.payment_method = null);
 
         // Clear previous errors (if they exist)
         setError(null);
 
         try {
+            // Post new expense and get response back
             const expenseInfo = await ExpenseApiService.postExpense(expense);
-            console.log("expenseInfo", expenseInfo);
 
             // Clear form data
             amount.value = "";
@@ -155,18 +175,16 @@ export default function NewExpenseForm(props) {
             payment_method.value = "";
             description.value = "";
 
+            // Follow successful path
+            props.onLoginSuccess(expenseInfo.path);
+
             // Add new expense info to expense array in state
             const newExpense = expenseInfo.expense;
             const expenses = context.expenses;
             expenses.push(newExpense);
-            console.log(expenses);
             context.setExpenses(expenses);
-            console.log(expenses);
-
-            // Follow successful path
-            props.onLoginSuccess(expenseInfo.path);
         } catch (error) {
-            console.log(error.message);
+            console.error(error.message);
             setError(error.message);
         }
     }

@@ -1,6 +1,22 @@
 // React
 import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
+// Get icons from Font Awesome
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+    faBars,
+    faUserCircle,
+    faPlusCircle,
+    faDollarSign,
+    faMoneyBill,
+    faMoneyBillWave,
+    faCreditCard,
+    faList,
+    faSignInAlt,
+    faSignOutAlt,
+    faPlusSquare,
+    faPlayCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 // Configuration
 import "./App.css";
@@ -16,10 +32,9 @@ import Footer from "../Footer/Footer";
 import NavBar from "../NavBar/NavBar";
 import PrivateRoute from "../Utilities/PrivateRoute/PrivateRoute";
 import PublicOnlyRoute from "../Utilities/PublicOnlyRoute/PublicOnlyRoute";
-import SideBar from "../SideBar/SideBar";
+import PageNotFound from "../PageNotFound/PageNotFound";
 
 // Routes
-// import NewExpensePage from "../../routes/Expenses/NewExpensePage/NewExpensePage";
 import CategoriesPage from "../../routes/Categories/CategoriesPage/CategoriesPage";
 import DashboardPage from "../../routes/DashboardPage/DashboardPage";
 import ExpensesPage from "../../routes/Expenses/ExpensesPage/ExpensesPage";
@@ -39,23 +54,22 @@ export default function App() {
     const [error, setError] = useState(null);
     const [expenses, setExpenses] = useState([]);
     const [payment_methods, setPayment_methods] = useState([]);
-    const [showSideBar, setShowSideBar] = useState(false);
-    const [showUserMenu, setShowUserMenu] = useState(false);
 
-    // Toggle variable (true becomes false, etc.) for showing an element
-    // FIGURE OUT WAY TO MAKE THIS CALL FUNCTION BY VARIABLE VALUE
-    function toggleStateBoolean(element) {
-        switch (element) {
-            case "showSideBar":
-                setShowSideBar(!showSideBar);
-                break;
-            case "showUserMenu":
-                setShowUserMenu(!showUserMenu);
-                break;
-            default:
-                console.log(`Can't toggle ${element}`);
-        }
-    }
+    // Add Font Awesome icons to library
+    library.add(
+        faBars,
+        faUserCircle,
+        faPlusCircle,
+        faDollarSign,
+        faMoneyBill,
+        faMoneyBillWave,
+        faCreditCard,
+        faList,
+        faSignInAlt,
+        faSignOutAlt,
+        faPlusSquare,
+        faPlayCircle
+    );
 
     // Toggle classNames for every item in given object
     function toggleClassNames(classNamesObj) {
@@ -101,35 +115,35 @@ export default function App() {
         });
     }
 
-    // Get categories from API, store in context
     useEffect(() => {
         // Only get info from API if user is logged in
+
+        // Get categories from API, store in context
         if (TokenService.hasAuthToken()) {
             CategoryApiService.getCategories().then((categories) =>
                 setCategories(categories)
             );
         }
-    }, [JSON.stringify(categories)]);
 
-    // Get payment methods from API, store in context
-    useEffect(() => {
-        // Only get info from API if user is logged in
+        // Get payment methods from API, store in context
         if (TokenService.hasAuthToken()) {
             PaymentMethodApiService.getPayment_methods().then(
                 (payment_methods) => setPayment_methods(payment_methods)
             );
         }
-    }, [JSON.stringify(payment_methods)]);
 
-    // Get expenses from API, store in context
-    useEffect(() => {
-        // Only get info from API if user is logged in
+        // Get expenses from API, store in context
         if (TokenService.hasAuthToken()) {
             ExpenseApiService.getExpenses().then((expenses) =>
                 setExpenses(expenses)
             );
         }
-    }, [JSON.stringify(expenses)]);
+    }, [
+        JSON.stringify(categories),
+        JSON.stringify(payment_methods),
+        JSON.stringify(expenses),
+        TokenService.hasAuthToken(),
+    ]);
 
     const contextValue = {
         categories: categories,
@@ -140,15 +154,13 @@ export default function App() {
         setClassNames: setClassNames,
         setExpenses: setExpenses,
         setPayment_methods: setPayment_methods,
-        showUserMenu: showUserMenu,
         toggleClassNames: toggleClassNames,
-        toggleStateBoolean: toggleStateBoolean,
     };
 
     return (
         <div id='App'>
             <TrackerContext.Provider value={contextValue}>
-                <SideBar className={classNames.SideBar} />
+                {/* <SideBar className={classNames.SideBar} /> */}
 
                 <section
                     id='container_page'
@@ -186,8 +198,7 @@ export default function App() {
                                     </ErrorBoundary>
                                 )}
                             />
-                            <Route
-                                exact
+                            <PublicOnlyRoute
                                 path='/login'
                                 render={(routerProps) => (
                                     <ErrorBoundary
@@ -227,7 +238,23 @@ export default function App() {
                                     </ErrorBoundary>
                                 )}
                             />
-                            {/* NEED TO ADD NOT FOUND PAGE */}
+                            <PublicOnlyRoute
+                                path='/demo'
+                                render={(routerProps) => (
+                                    <ErrorBoundary
+                                        message={`Couldn't load Demo page`}
+                                    >
+                                        <LoginPage
+                                            // Pass in info to log in to demo account
+                                            message='LOG IN TO THE DEMO ACCOUNT'
+                                            email={"testuser_1@test.com"}
+                                            password={"test12$FOUR"}
+                                        />
+                                    </ErrorBoundary>
+                                )}
+                            />
+                            {/* Catch requests to pages that don't exist */}
+                            <Route component={PageNotFound} />
                         </Switch>
                     </main>
                     <Footer />

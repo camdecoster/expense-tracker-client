@@ -1,14 +1,14 @@
 nav {
     width: 100%;
-    padding-top: 20px;
-    padding-bottom: 20px;
     margin-bottom: 10px;
+    padding-bottom: 10px;
     position: sticky;
     top: 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    border-bottom: 1px solid var(--blue-medium);
+    align-items: center;
+    border-bottom: 2px solid var(--blue-medium);
     background-color: inherit;
     z-index: 500;
 }
@@ -26,28 +26,41 @@ nav a {
     text-decoration: none;
 }
 
-h3 {
-    display: inline;
-}
-
-.faPlusCircle {
-    margin-left: 10px;
-}
-
 nav p {
     display: inline;
 }
 
-nav .faIcon {
+nav .link_button {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+nav .link_button .faIcon {
     font-size: 20px;
 }
 
-.containerUserMenu {
-    position: relative;
+nav .link_list {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
-nav button {
-    width: 40px;
+#logged_in_note {
+    font-size: 12px;
+}
+
+@media screen and (min-width: 400px) {
+    nav .link_button {
+        height: 60px;
+        width: 60px;
+        border-radius: 30px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    nav .link_button .faIcon {
+        font-size: 28px;
+    }
 }

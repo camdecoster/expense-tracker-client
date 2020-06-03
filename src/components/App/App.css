@@ -1,18 +1,37 @@
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Raleway:wght@400&family=Roboto+Condensed&family=Roboto+Slab:wght@300&display=swap");
+
 #App {
     display: flex;
     flex-direction: row;
     background-color: var(--blue-dark);
     color: var(--light);
+    font-family: "Roboto Condensed", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+th {
+    font-family: "Roboto Slab", serif;
+}
+
+section h1 {
+    font-size: 25px;
+}
+
+section h2 {
+    font-size: 22px;
 }
 
 .container_page {
-    position: absolute;
-    width: 100vw;
-    height: 100%;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: margin-left 0.5s;
     background-color: inherit;
 }
 
@@ -21,11 +40,11 @@
 }
 
 #App main {
-    position: relative;
+    box-sizing: border-box;
+    min-width: 100%;
     max-width: min(100vw, 800px);
-    padding-bottom: 10px;
-    /* Need to fix issue with height when less than viewport */
-    /* min-height: 100vh; */
+    padding: 10px;
+    padding-bottom: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,6 +52,13 @@
 
 .route_page {
     width: 100%;
+    max-width: 800px;
+}
+
+.route_page form {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
 }
 
 main > section {
@@ -53,19 +79,23 @@ label {
     margin-bottom: 5px;
 }
 
-input,
-select {
-    margin-bottom: 15px;
+form input,
+form select {
+    margin-bottom: 20px;
 }
 
-input {
+input,
+select {
+    height: 40px;
     box-sizing: border-box;
-    width: 200px;
-    height: 20px;
+    min-width: 100%;
+    height: 30px;
     padding-left: 10px;
     background-color: var(--light);
-    border: 1px solid var(--blue-medium);
-    border-radius: 10px;
+    border: 2px solid var(--blue-medium);
+    border-radius: 15px;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 button {
@@ -81,20 +111,36 @@ button:active {
     border-color: var(--blue-light);
 }
 
-.link_list {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-
-.link_list li {
-    padding: 5px;
-}
-
-.link_list li:hover {
-    background-color: var(--blue-medium);
+textarea#description {
+    box-sizing: border-box;
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    background-color: var(--light);
+    border: 1px solid var(--blue-medium);
+    border-radius: 15px;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 .hidden {
     display: none !important;
+}
+
+header {
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+header h1 {
+    display: inline-block;
+}
+
+@media screen and (min-width: 400px) {
+    body {
+        font-size: 20px;
+    }
 }

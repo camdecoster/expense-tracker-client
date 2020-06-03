@@ -1,6 +1,5 @@
 // React
 import React, { useContext, useState, useEffect } from "react";
-// import { useRouteMatch } from "react-router-dom";
 
 // Configuration
 import "./EditCategoryForm.css";
@@ -14,7 +13,7 @@ export default function EditCategoryForm(props) {
     // Access context
     const context = useContext(TrackerContext);
 
-    // Get category with given ID
+    // Get category with given ID from state
     // If ID doesn't exist, use empty object
     // const category =
     //     context.categories.filter(
@@ -25,17 +24,17 @@ export default function EditCategoryForm(props) {
     const [error, setError] = useState(null);
     const [allowEdit, setAllowEdit] = useState(false);
     const [category, setCategory] = useState({});
+    const [allowDelete, setAllowDelete] = useState(false);
 
     // Get category from API, store in context
     useEffect(() => {
         CategoryApiService.getCategory(id).then((category) =>
             setCategory(category)
         );
-        // setDefaultType(category.type);
     }, [JSON.stringify(category)]);
 
     // Get category ID from props
-    const { id } = props;
+    const id = parseInt(props.id);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -43,7 +42,7 @@ export default function EditCategoryForm(props) {
         // Get info from form
         const { category_name, type, amount, description = "" } = event.target;
         const updatedCategory = {
-            id: parseInt(id),
+            id: id,
             category_name: category_name.value,
             type: type.value,
             amount: amount.value,
@@ -74,22 +73,50 @@ export default function EditCategoryForm(props) {
             const index = categories.findIndex(
                 (category) => category.id === updatedCategory.id
             );
-            // console.log(...categories, categories[index]);
+
+            // Follow successful path
+            props.onLoginSuccess(updatedCategory.id);
 
             // Replace old category with updated category
             categories.splice(index, 1, updatedCategory);
             context.setCategories(categories);
-
-            // Follow successful path
-            props.onLoginSuccess(updatedCategory.id);
         } catch (newError) {
             setError(newError.message);
         }
     }
 
-    // function handleCancel() {
-    //     props.onCancel();
-    // }
+    async function handleDelete(event) {
+        // Clear previous errors (if they exist)
+        setError(null);
+
+        try {
+            const res = await CategoryApiService.deleteCategory(id);
+
+            // Disable expense edit, don't show confirm delete button
+            setAllowEdit(false);
+            setAllowDelete(false);
+
+            // Update expense info in expense array in state
+            const categories = context.categories;
+
+            // Get index of expense in state
+            const index = categories.findIndex(
+                (category) => category.id === id
+            );
+
+            // Follow successful path
+            props.onDeleteSuccess();
+
+            // Delete category from state, do this last so App state update doesn't
+            // call this page again
+            const newCategories = categories
+                .slice(0, index)
+                .concat(categories.slice(index + 1));
+            context.setCategories(newCategories);
+        } catch (newError) {
+            setError(newError.message);
+        }
+    }
 
     return (
         <form id='EditCategoryForm' onSubmit={(event) => handleSubmit(event)}>
@@ -145,10 +172,10 @@ export default function EditCategoryForm(props) {
                     </div> --> */}
             <div>
                 <label htmlFor='description'>Description (Optional)</label>
-                <input
-                    type='text'
+                <textarea
                     name='description'
                     id='description'
+                    wrap='soft'
                     defaultValue={category.description || ""}
                     disabled={!allowEdit}
                 />
@@ -160,10 +187,33 @@ export default function EditCategoryForm(props) {
             )}
             {!allowEdit || <button type='submit'>Update Category</button>}
             {!allowEdit || (
-                <button type='button' onClick={() => setAllowEdit(!allowEdit)}>
+                <button
+                    type='button'
+                    onClick={() => {
+                        setAllowEdit(false);
+                        setAllowDelete(false);
+                    }}
+                >
                     Cancel
                 </button>
             )}
+            {allowEdit && !allowDelete ? (
+                <button type='button' onClick={() => setAllowDelete(true)}>
+                    Delete
+                </button>
+            ) : (
+                ""
+            )}
+            {allowEdit && allowDelete ? (
+                <button type='button' onClick={(event) => handleDelete(event)}>
+                    Confirm Deletion
+                </button>
+            ) : (
+                ""
+            )}
+            <button type='button' onClick={() => props.onCancel()}>
+                Go Back
+            </button>
             {error ? <ErrorMessage message={error} /> : ""}
         </form>
     );

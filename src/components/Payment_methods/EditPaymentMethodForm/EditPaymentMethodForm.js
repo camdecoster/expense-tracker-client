@@ -14,17 +14,18 @@ export default function EditPaymentMethodForm(props) {
     const context = useContext(TrackerContext);
 
     // Initialize state
-    const [error, setError] = useState(null);
+    const [allowDelete, setAllowDelete] = useState(false);
     const [allowEdit, setAllowEdit] = useState(false);
+    const [cycleDatesClassName, setCycleDatesClassName] = useState("hidden");
+    const [error, setError] = useState(null);
     const [payment_method, setPayment_method] = useState({});
     const [payment_methodData, setPayment_methodData] = useState({
-        name: "",
+        payment_method_name: "",
         cycle_type: "monthly",
         cycle_start: 1,
         cycle_end: 31,
         description: "",
     });
-    const [cycleDatesClassName, setCycleDatesClassName] = useState("hidden");
 
     function handleInputChange(event) {
         const { id, value } = event.target;
@@ -36,14 +37,22 @@ export default function EditPaymentMethodForm(props) {
 
     // Get payment method from API, store in context
     useEffect(() => {
-        PaymentMethodApiService.getPayment_method(id).then((payment_method) =>
-            setPayment_method(payment_method)
-        );
-        if (payment_method.cycle_type === "offset") setCycleDatesClassName("");
+        PaymentMethodApiService.getPayment_method(id).then((payment_method) => {
+            setPayment_method(payment_method);
+            setPayment_methodData(payment_method);
+        });
+        // setPayment_methodData(payment_method);
+        // if (payment_method.cycle_type === "offset") setCycleDatesClassName("");
     }, [JSON.stringify(payment_method)]);
 
+    useEffect(() => {
+        payment_methodData.cycle_type === "offset"
+            ? setCycleDatesClassName("")
+            : setCycleDatesClassName("hidden");
+    }, [JSON.stringify(payment_methodData)]);
+
     // Get payment method ID from props
-    const { id } = props;
+    const id = parseInt(props.id);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -91,6 +100,39 @@ export default function EditPaymentMethodForm(props) {
 
             // Follow successful path
             props.onLoginSuccess(updatedPayment_method.id);
+        } catch (newError) {
+            setError(newError.message);
+        }
+    }
+
+    async function handleDelete(event) {
+        // Clear previous errors (if they exist)
+        setError(null);
+
+        try {
+            const res = await PaymentMethodApiService.deletePayment_method(id);
+
+            // Disable expense edit, don't show confirm delete button
+            setAllowEdit(false);
+            setAllowDelete(false);
+
+            // Update expense info in expense array in state
+            const payment_methods = context.payment_methods;
+
+            // Get index of expense in state
+            const index = payment_methods.findIndex(
+                (payment_method) => payment_method.id === id
+            );
+
+            // Follow successful path
+            props.onDeleteSuccess();
+
+            // Delete category from state, do this last so App state update doesn't
+            // call this page again
+            const newPayment_methods = payment_methods
+                .slice(0, index)
+                .concat(payment_methods.slice(index + 1));
+            context.setPayment_methods(newPayment_methods);
         } catch (newError) {
             setError(newError.message);
         }
@@ -172,13 +214,13 @@ export default function EditPaymentMethodForm(props) {
             <div>
                 <label htmlFor='description'>Description (Optional)</label>
                 <br />
-                <input
-                    type='text'
+                <textarea
                     name='description'
                     id='description'
+                    wrap='soft'
                     onChange={(event) => handleInputChange(event)}
+                    defaultValue={payment_method.description || ""}
                     disabled={!allowEdit}
-                    defaultValue={payment_method.description}
                 />
             </div>
             {allowEdit || (
@@ -188,10 +230,33 @@ export default function EditPaymentMethodForm(props) {
             )}
             {!allowEdit || <button type='submit'>Update Category</button>}
             {!allowEdit || (
-                <button type='button' onClick={() => setAllowEdit(!allowEdit)}>
+                <button
+                    type='button'
+                    onClick={() => {
+                        setAllowEdit(false);
+                        setAllowDelete(false);
+                    }}
+                >
                     Cancel
                 </button>
             )}
+            {allowEdit && !allowDelete ? (
+                <button type='button' onClick={() => setAllowDelete(true)}>
+                    Delete
+                </button>
+            ) : (
+                ""
+            )}
+            {allowEdit && allowDelete ? (
+                <button type='button' onClick={(event) => handleDelete(event)}>
+                    Confirm Deletion
+                </button>
+            ) : (
+                ""
+            )}
+            <button type='button' onClick={() => props.onCancel()}>
+                Go Back
+            </button>
             {error ? <ErrorMessage message={error} /> : ""}
         </form>
     );

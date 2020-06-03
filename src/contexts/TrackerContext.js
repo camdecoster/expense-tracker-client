@@ -9,9 +9,7 @@ const TrackerContext = React.createContext({
     setClassNames: () => {},
     setExpenses: () => {},
     setPayment_methods: () => {},
-    showUserMenu: null,
     toggleClassNames: () => {},
-    toggleStateBoolean: () => {},
 });
 
 export default TrackerContext;

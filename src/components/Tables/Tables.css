@@ -2,6 +2,7 @@ table {
     border-collapse: collapse;
     text-align: center;
     background-color: var(--blue-light);
+    font-size: 12.7px;
 }
 
 th {
@@ -25,5 +26,21 @@ th {
 }
 
 #container_table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: inherit;
     overflow-x: auto;
+}
+
+@media screen and (min-width: 400px) {
+    table {
+        font-size: 17px;
+    }
+}
+
+@media screen and (min-width: 700px) {
+    table {
+        font-size: 19px;
+    }
 }

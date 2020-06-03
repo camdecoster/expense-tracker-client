@@ -7,9 +7,10 @@ import "./ExpensesPage.css";
 import TrackerContext from "../../../contexts/TrackerContext";
 
 // Components
+import AddItemLinkButton from "../../../components/Utilities/AddItemLinkButton/AddItemLinkButton";
 import EditExpensePage from "../EditExpensePage/EditExpensePage";
+import ExpensesTable from "../../../components/Tables/ExpensesTable/ExpensesTable";
 import NewExpensePage from "../NewExpensePage/NewExpensePage";
-import SimpleTable from "../../../components/SimpleTable/SimpleTable";
 
 export default function ExpensesPage() {
     // Access context
@@ -26,24 +27,25 @@ export default function ExpensesPage() {
 
     const data = React.useMemo(() => context.expenses, []);
 
-    const columns = React.useMemo(
+    const columnsLargeScreen = React.useMemo(
         () => [
             {
                 Header: "Amount",
-                accessor: (row) =>
-                    row.type === "expense" ? (
-                        <Link to={`${url}/${row.id}`}>
-                            {currencyFormatter.format(row.amount)}
+                accessor: (expense) =>
+                    expense.type === "expense" ? (
+                        <Link to={`${url}/${expense.id}`}>
+                            {currencyFormatter.format(expense.amount)}
                         </Link>
                     ) : (
-                        <Link to={`${url}/${row.id}`}>
-                            {currencyFormatter.format(row.amount * -1)}
+                        <Link to={`${url}/${expense.id}`}>
+                            {currencyFormatter.format(expense.amount * -1)}
                         </Link>
                     ),
             },
             {
                 Header: "Date",
-                accessor: (row) => new Date(row.date).toLocaleDateString(), // Change this to short form of date
+                accessor: (expense) =>
+                    new Date(expense.date).toLocaleDateString(), // Change this to short form of date
             },
             {
                 Header: "Payee",
@@ -51,28 +53,59 @@ export default function ExpensesPage() {
             },
             {
                 Header: "Category",
-                accessor: (row) => {
+                accessor: (expense) => {
+                    if (expense.category === null) return "Uncategorized";
                     // Get category name from ID taken from expense
                     const category = context.categories.filter(
-                        (category) => category.id == row.category
+                        (category) => category.id === expense.category
                     )[0];
                     return category.category_name;
-                }, // Make link that filters table to just this category
+                }, // FUTURE: Make link that filters table to just this category
             },
             {
                 Header: "Payment Method",
-                accessor: (row) => {
+                accessor: (expense) => {
+                    if (expense.payment_method === null)
+                        return "No Payment Method";
                     // Get payment method name from ID taken from expense
                     const payment_method = context.payment_methods.filter(
                         (payment_method) =>
-                            payment_method.id == row.payment_method
+                            payment_method.id === expense.payment_method
                     )[0];
                     return payment_method.payment_method_name;
-                }, // Make link that filters table to just this method
+                }, // FUTURE: Make link that filters table to just this method
             },
             {
                 Header: "Description",
                 accessor: "description",
+            },
+        ],
+        []
+    );
+
+    const columnsSmallScreen = React.useMemo(
+        () => [
+            {
+                Header: "Amount",
+                accessor: (expense) =>
+                    expense.type === "expense" ? (
+                        <Link to={`${url}/${expense.id}`}>
+                            {currencyFormatter.format(expense.amount)}
+                        </Link>
+                    ) : (
+                        <Link to={`${url}/${expense.id}`}>
+                            {currencyFormatter.format(expense.amount * -1)}
+                        </Link>
+                    ),
+            },
+            {
+                Header: "Date",
+                accessor: (expense) =>
+                    new Date(expense.date).toLocaleDateString(), // Change this to short form of date
+            },
+            {
+                Header: "Payee",
+                accessor: "payee",
             },
         ],
         []
@@ -91,10 +124,27 @@ export default function ExpensesPage() {
                     <div>
                         <header role='banner'>
                             <h1>Expense Log</h1>
+                            <AddItemLinkButton
+                                to={`${url}/new`}
+                                name='Add New Expense'
+                                icon='plus-circle'
+                            />
                         </header>
-                        <Link to={`${url}/new`}>Add new expense</Link>
                         {context.expenses[0] ? (
-                            <SimpleTable columns={columns} data={data} />
+                            <div>
+                                <div className='expenses_table_small'>
+                                    <ExpensesTable
+                                        columns={columnsSmallScreen}
+                                        data={data}
+                                    />
+                                </div>
+                                <div className='expenses_table_large'>
+                                    <ExpensesTable
+                                        columns={columnsLargeScreen}
+                                        data={data}
+                                    />
+                                </div>
+                            </div>
                         ) : (
                             <div>
                                 After you add some expenses, they'll appear on

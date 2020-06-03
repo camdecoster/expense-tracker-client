@@ -3,7 +3,7 @@ import React, { useMemo, useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
 // Components
-import SimpleTable from "../../SimpleTable/SimpleTable";
+import SimpleTable from "../../Tables/SimpleTable/SimpleTable";
 
 export default function CategoryExpensesTable(props) {
     // Get selected date from props
@@ -17,6 +17,7 @@ export default function CategoryExpensesTable(props) {
 
     // Create table data
     const data = useMemo(() => categoryTotals, [
+        // Only update when categoryTotals is changed
         JSON.stringify(categoryTotals),
     ]);
 
@@ -25,25 +26,33 @@ export default function CategoryExpensesTable(props) {
         () => [
             {
                 Header: "Category",
-                // accessor: "category_name", // accessor is the "key" in the data
-                accessor: (row) => (
-                    <Link to={`/categories/${row.id}`}>
-                        {row.category_name}
-                    </Link>
-                ),
+                accessor: (category) =>
+                    category.category_name !== null ? (
+                        <Link to={`/categories/${category.id}`}>
+                            {category.category_name}
+                        </Link>
+                    ) : (
+                        "Uncategorized"
+                    ),
             },
             {
                 Header: "Expenses",
-                accessor: (row) => currencyFormatter.format(row.total),
+                accessor: (category) => {
+                    return `${currencyFormatter.format(category.total)}`;
+                },
             },
             {
                 Header: "Budget",
-                accessor: (row) => currencyFormatter.format(row.amount),
+                accessor: (category) =>
+                    currencyFormatter.format(category.amount),
             },
             {
                 Header: "Remain",
-                accessor: (row) =>
-                    currencyFormatter.format(row.amount - row.total),
+                accessor: (category) => {
+                    return `${currencyFormatter.format(
+                        category.amount - category.total
+                    )}`;
+                },
             },
         ],
         []

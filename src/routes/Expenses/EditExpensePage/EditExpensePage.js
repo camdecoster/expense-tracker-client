@@ -4,7 +4,7 @@ import { Link, useRouteMatch, useHistory, useParams } from "react-router-dom";
 
 // Configuration
 import "./EditExpensePage.css";
-import TrackerContext from "../../../contexts/TrackerContext";
+// import TrackerContext from "../../../contexts/TrackerContext";
 
 // Components
 import EditExpenseForm from "../../../components/Expenses/EditExpenseForm/EditExpenseForm";
@@ -24,6 +24,10 @@ export default function EditExpensePage() {
         history.push("/expenses");
     }
 
+    function handleDeleteSuccess() {
+        history.push("/expenses");
+    }
+
     function handleFormSuccess() {
         // Route user to new element
         history.push(url);
@@ -34,11 +38,12 @@ export default function EditExpensePage() {
             <header role='banner'>
                 <h1>Edit Expense</h1>
             </header>
-            <Link to='/expenses'>Back to all expenses</Link>
+            {/* <Link to='/expenses'>Back to all expenses</Link> */}
             <EditExpenseForm
                 id={expenseId}
                 onCancel={handleFormCancel}
-                onLoginSuccess={handleFormSuccess}
+                onDeleteSuccess={handleDeleteSuccess}
+                onUpdateSuccess={handleFormSuccess}
             />
         </section>
     );

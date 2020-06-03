@@ -1,4 +1,5 @@
 #PaymentMethodsBarChart {
+    box-sizing: border-box;
     position: relative;
     width: 100%;
     height: 40vh;

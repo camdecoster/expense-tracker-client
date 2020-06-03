@@ -1,0 +1,31 @@
+#RegistrationForm {
+    width: 300px;
+}
+
+#RegistrationForm .error {
+    color: red;
+    font-weight: bold;
+}
+
+#button_register:disabled {
+    background-color: darkgray;
+}
+
+#button_password_reqs {
+    height: auto;
+    margin-bottom: 10px;
+    display: block;
+    background-color: transparent;
+    border: 0;
+    color: var(--orange-medium);
+    font-size: 10px;
+    font-weight: bold;
+}
+
+/* #button_password_reqs:hover {
+    color: var(--orange-dark);
+} */
+
+#password_reqs {
+    width: 300px;
+}

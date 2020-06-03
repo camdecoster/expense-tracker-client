@@ -1,21 +1,19 @@
 // React
 import React from "react";
-import { useTable } from "react-table";
+import { useTable, useSortBy } from "react-table";
 
 // Configuration
-import "./SimpleTable.css";
+import "../Tables.css";
 
-function SimpleTable({ columns, data }) {
-    // const memoColumns = React.useMemo(() => columns, []);
-    // const memoData = React.useMemo(() => data, []);
-
+// This is the simple table but you can sort the columns
+export default function ExpensesTable({ columns, data }) {
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data });
+    } = useTable({ columns, data }, useSortBy);
 
     return (
         <div id='container_table'>
@@ -24,8 +22,19 @@ function SimpleTable({ columns, data }) {
                     {headerGroups.map((headerGroup) => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map((column) => (
-                                <th {...column.getHeaderProps()}>
+                                <th
+                                    {...column.getHeaderProps(
+                                        column.getSortByToggleProps()
+                                    )}
+                                >
                                     {column.render("Header")}
+                                    <span>
+                                        {column.isSorted
+                                            ? column.isSortedDesc
+                                                ? " 🔽"
+                                                : " 🔼"
+                                            : ""}
+                                    </span>
                                 </th>
                             ))}
                         </tr>
@@ -51,5 +60,3 @@ function SimpleTable({ columns, data }) {
         </div>
     );
 }
-
-export default SimpleTable;

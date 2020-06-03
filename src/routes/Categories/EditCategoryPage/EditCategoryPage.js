@@ -20,6 +20,10 @@ export default function EditCategoryPage() {
     // Get category ID from path parameter
     const { categoryId } = useParams();
 
+    function handleDeleteSuccess() {
+        history.push("/categories");
+    }
+
     function handleFormCancel() {
         history.push("/categories");
     }
@@ -34,10 +38,11 @@ export default function EditCategoryPage() {
             <header role='banner'>
                 <h1>Edit Category</h1>
             </header>
-            <Link to='/categories'>Back to all categories</Link>
+            {/* <Link to='/categories'>Back to all categories</Link> */}
             <EditCategoryForm
                 id={categoryId}
                 onCancel={handleFormCancel}
+                onDeleteSuccess={handleDeleteSuccess}
                 onLoginSuccess={handleFormSuccess}
             />
         </section>

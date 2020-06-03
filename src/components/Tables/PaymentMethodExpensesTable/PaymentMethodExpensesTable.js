@@ -3,7 +3,7 @@ import React, { useMemo, useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
 // Components
-import SimpleTable from "../../SimpleTable/SimpleTable";
+import SimpleTable from "../../Tables/SimpleTable/SimpleTable";
 
 export default function PaymentMethodExpensesTable(props) {
     // Get selected date, payment method info from props
@@ -26,46 +26,35 @@ export default function PaymentMethodExpensesTable(props) {
             {
                 Header: "Method",
                 // accessor: "payment_method_name", // accessor is the "key" in the data
-                accessor: (row) => (
-                    <Link to={`/payment-methods/${row.id}`}>
-                        {row.payment_method_name}
-                    </Link>
-                ),
+                accessor: (payment_method) =>
+                    payment_method.payment_method_name !== null ? (
+                        <Link to={`/payment-methods/${payment_method.id}`}>
+                            {payment_method.payment_method_name}
+                        </Link>
+                    ) : (
+                        "No Payment Method"
+                    ),
             },
             {
                 Header: "Expenses",
-                accessor: (row) => currencyFormatter.format(row.total),
+                accessor: (payment_method) =>
+                    currencyFormatter.format(payment_method.total),
             },
             {
                 Header: "Cycle",
-                columns: [
-                    {
-                        Header: "Start",
-                        accessor: (row) => {
-                            const monthCurrent = dateSelected.getMonth() + 1;
-                            if (row.cycle_type === "offset") {
-                                return `${monthCurrent}/${row.cycle_start}`;
-                            }
-                            return `${monthCurrent}/01`;
-                        },
-                    },
-                    {
-                        Header: "End",
-                        accessor: (row) => {
-                            const monthCurrent = dateSelected.getMonth() + 1;
-                            const monthNext = dateSelected.getMonth() + 2;
-                            const lastDayOfMonthCurrent = new Date(
-                                dateSelected.getFullYear(),
-                                dateSelected.getMonth() + 1,
-                                0
-                            ).getDate();
-                            if (row.cycle_type === "offset") {
-                                return `${monthNext}/${row.cycle_end}`;
-                            }
-                            return `${monthCurrent}/${lastDayOfMonthCurrent}`;
-                        },
-                    },
-                ],
+                accessor: (payment_method) => {
+                    const monthCurrent = dateSelected.getMonth() + 1;
+                    const monthNext = dateSelected.getMonth() + 2;
+                    const lastDayOfMonthCurrent = new Date(
+                        dateSelected.getFullYear(),
+                        dateSelected.getMonth() + 1,
+                        0
+                    ).getDate();
+                    if (payment_method.cycle_type === "offset") {
+                        return `${monthCurrent}/${payment_method.cycle_start} to ${monthNext}/${payment_method.cycle_end}`;
+                    }
+                    return `${monthCurrent}/01 to ${monthCurrent}/${lastDayOfMonthCurrent}`;
+                },
             },
         ],
         [dateSelected]

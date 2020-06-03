@@ -50,8 +50,6 @@ export default function NewPaymentMethodForm(props) {
             description: description.value,
         };
 
-        console.log("payment_method", payment_method);
-
         // Clear previous errors (if they exist)
         setError(null);
 
@@ -59,7 +57,6 @@ export default function NewPaymentMethodForm(props) {
             const payment_methodInfo = await PaymentMethodApiService.postPayment_method(
                 payment_method
             );
-            console.log("payment_methodInfo", payment_methodInfo);
 
             // Clear form data
             payment_method_name.value = "";
@@ -68,16 +65,16 @@ export default function NewPaymentMethodForm(props) {
             cycle_end.value = "";
             description.value = "";
 
+            // Follow successful path
+            props.onLoginSuccess(payment_methodInfo.path);
+
             // Add new payment method info to payment method array in state
             const newPayment_method = payment_methodInfo.payment_method;
             const payment_methods = context.payment_methods;
             payment_methods.push(newPayment_method);
             context.setPayment_methods(payment_methods);
-
-            // Follow successful path
-            props.onLoginSuccess(payment_methodInfo.path);
         } catch (error) {
-            console.log(error.message);
+            console.error(error.message);
             setError(error.message);
         }
     }
@@ -149,16 +146,16 @@ export default function NewPaymentMethodForm(props) {
             <div>
                 <label htmlFor='description'>Description (Optional)</label>
                 <br />
-                <input
-                    type='text'
+                <textarea
                     name='description'
                     id='description'
+                    wrap='soft'
                     onChange={(event) => handleInputChange(event)}
                 />
             </div>
             <button type='submit'>Add Payment Method</button>
             <button type='button' onClick={() => props.onCancel()}>
-                Cancel
+                Go Back
             </button>
             {error ? <ErrorMessage message={error} /> : ""}
         </form>

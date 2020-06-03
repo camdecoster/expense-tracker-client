@@ -20,6 +20,10 @@ export default function EditPaymentMethodPage() {
     // Get payment method ID from path parameter
     const { payment_methodId } = useParams();
 
+    function handleDeleteSuccess() {
+        history.push("/payment-methods");
+    }
+
     function handleFormCancel() {
         history.push("/payment-methods");
     }
@@ -34,10 +38,11 @@ export default function EditPaymentMethodPage() {
             <header role='banner'>
                 <h1>Edit Payment Method</h1>
             </header>
-            <Link to='/payment-methods'>Back to all payment methods</Link>
+            {/* <Link to='/payment-methods'>Back to all payment methods</Link> */}
             <EditPaymentMethodForm
                 id={payment_methodId}
                 onCancel={handleFormCancel}
+                onDeleteSuccess={handleDeleteSuccess}
                 onLoginSuccess={handleFormSuccess}
             />
         </section>

@@ -1,5 +1,5 @@
 // React
-import React, { Component } from "react";
+import React, { Component, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 // Configuration
@@ -8,25 +8,23 @@ import TrackerContext from "../../contexts/TrackerContext";
 import TokenService from "../../services/token-service";
 import AuthApiService from "../../services/auth-api-service";
 
-class LoginForm extends Component {
-    static contextType = TrackerContext;
+export default function LoginForm(props) {
+    // Access context
+    const context = useContext(TrackerContext);
 
-    static defaultProps = {
-        onLoginSuccess: () => {},
-    };
+    // Get default email and password if passed in
+    const { email = "", password = "" } = props;
 
-    state = {
-        error: null,
-    };
+    const [error, setError] = useState(null);
 
-    handleSubmit = (ev) => {
+    function handleSubmit(ev) {
         ev.preventDefault();
 
         // Get info from form
         const { email, password } = ev.target;
 
         // Clear previous errors (if they exist)
-        this.setState({ error: null });
+        setError(null);
 
         AuthApiService.postLogin({
             email: email.value,
@@ -36,76 +34,50 @@ class LoginForm extends Component {
                 email.value = "";
                 password.value = "";
                 TokenService.saveAuthToken(res.authToken);
-                this.props.onLoginSuccess();
+                props.onLoginSuccess();
             })
             .catch((res) => {
-                this.setState({ error: res.error });
+                setError(res.error);
             });
-    };
-
-    // handleSubmitBasicAuth = (ev) => {
-    //     ev.preventDefault();
-
-    //     // Get form values entered by user
-    //     const { email, password } = ev.target;
-
-    //     // Create basic auth token
-    //     TokenService.saveAuthToken(
-    //         TokenService.makeBasicAuthToken(email.value, password.value)
-    //     );
-
-    //     // Clear form values
-    //     email.value = "";
-    //     password.value = "";
-    //     // this.props.onLoginSuccess();
-    //     this.context.setLoggedInState(true);
-
-    //     // Route user to dashboard
-    //     this.props.history.push("/");
-    // };
-
-    render() {
-        return (
-            <form className='LoginForm' onSubmit={this.handleSubmit}>
-                <div>
-                    <label htmlFor='email'>Email</label>
-                    <input
-                        type='email'
-                        name='email'
-                        id='email'
-                        // Only use value for testing
-                        // defaultValue='test@test.com'
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor='password'>Password</label>
-                    <input
-                        type='password'
-                        name='password'
-                        id='password'
-                        // Only use value for testing
-                        // defaultValue='test'
-                        required
-                    />
-                </div>
-                <button type='submit'>Sign In</button>
-                <div>
-                    <p>Reset your password</p>
-                </div>
-                <div>
-                    <p>
-                        <Link to='/register'>Register</Link> for a new account
-                    </p>
-                </div>
-                <div role='alert'>
-                    {this.state.error && (
-                        <p className='red'>{this.state.error}</p>
-                    )}
-                </div>
-            </form>
-        );
     }
-}
 
-export default LoginForm;
+    return (
+        <form className='LoginForm' onSubmit={(event) => handleSubmit(event)}>
+            <div>
+                <label htmlFor='email'>Email</label>
+                <input
+                    type='email'
+                    name='email'
+                    id='email'
+                    // Use default value if one is passed in (like for demo account)
+                    defaultValue={props.email ? props.email : ""}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor='password'>Password</label>
+                <input
+                    type='password'
+                    name='password'
+                    id='password'
+                    // Use default value if one is passed in (like for demo account)
+                    defaultValue={props.password ? props.password : ""}
+                    required
+                />
+            </div>
+            <button type='submit'>Sign In</button>
+            {/* Add reset option later */}
+            {/* <div>
+                    <p>Reset your password</p>
+                </div> */}
+            <div>
+                <p>
+                    <Link to='/register'>Register</Link> for a new account
+                </p>
+            </div>
+            <div role='alert'>
+                {error && <p className='errorMessage'>{error}</p>}
+            </div>
+        </form>
+    );
+}
