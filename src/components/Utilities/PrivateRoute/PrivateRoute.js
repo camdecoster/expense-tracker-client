@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import TokenService from "../../../services/token-service";
 
-function PrivateRoute({ render, ...props }) {
+export default function PrivateRoute({ render, ...props }) {
     const Component = render;
     return (
         <Route
@@ -22,5 +22,3 @@ function PrivateRoute({ render, ...props }) {
         />
     );
 }
-
-export default PrivateRoute;

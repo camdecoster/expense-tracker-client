@@ -19,7 +19,10 @@ function NewCategoryPage() {
 
     function handleFormSuccess(newItemPath) {
         // Route user to new item
-        history.push(newItemPath);
+        // history.push(newItemPath);
+
+        // Route user to list of items
+        history.push("/categories");
     }
 
     function handleFormCancel() {

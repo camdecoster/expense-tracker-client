@@ -42,6 +42,7 @@ export default function NavBar() {
                     to={"/" + navLink.link}
                     name={navLink.name}
                     icon={navLink.icon}
+                    key={navLink.name}
                 />
             );
         });
@@ -85,6 +86,8 @@ export default function NavBar() {
                 className='link_button'
                 type='button'
                 title='Log Out'
+                key='Log Out'
+                aria-label='Log Out'
                 onClick={() => handleLogOutClick()}
             >
                 <FontAwesomeIcon className='faIcon' icon='sign-out-alt' />
@@ -118,11 +121,11 @@ export default function NavBar() {
 
     return (
         <nav role='navigation'>
-            <h2>
+            <h1>
                 <Link to='/' title='Go to Dashboard'>
                     Expense Tracker
                 </Link>
-            </h2>
+            </h1>
             <div className='link_list'>
                 {/* Links and logout should only be shown if user logged in */}
                 {TokenService.hasAuthToken()

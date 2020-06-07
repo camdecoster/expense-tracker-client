@@ -324,14 +324,14 @@ export default function EditExpenseForm(props) {
                     Cancel
                 </button>
             )}
-            {allowEdit && !allowDelete ? (
+            {!allowDelete ? (
                 <button type='button' onClick={() => setAllowDelete(true)}>
                     Delete
                 </button>
             ) : (
                 ""
             )}
-            {allowEdit && allowDelete ? (
+            {allowDelete ? (
                 <button type='button' onClick={(event) => handleDelete(event)}>
                     Confirm Deletion
                 </button>

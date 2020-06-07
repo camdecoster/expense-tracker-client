@@ -12,9 +12,13 @@ export default function AddItemLinkButton(props) {
             id='AddItemLinkButton'
             to={props.to}
             title={props.name}
-            key={props.name}
+            aria-label={props.name}
         >
-            <button className='link_button' type='button'>
+            <button
+                className='link_button'
+                type='button'
+                aria-label={props.name}
+            >
                 <FontAwesomeIcon className='faIcon' icon={props.icon} />
             </button>
         </Link>

@@ -17,7 +17,10 @@ export default function NewPaymentMethodPage() {
 
     function handleFormSuccess(newItemPath) {
         // Route user to new item
-        history.push(newItemPath);
+        // history.push(newItemPath);
+
+        // Route user to list of items
+        history.push("/payment-methods");
     }
 
     function handleFormCancel() {

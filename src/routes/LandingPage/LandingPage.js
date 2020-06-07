@@ -13,9 +13,11 @@ export default function LandingPage() {
         <section id='LandingPage' className='route_page'>
             <section>
                 <h3>Start keeping track</h3>
-                <p>
-                    <img className='landing_image' src={ImageItems} />
-                </p>
+                <img
+                    className='landing_image'
+                    src={ImageItems}
+                    alt='basket of colorful vegetables sitting on dark surface'
+                />
                 <p>
                     How do you spend your money? Most people can think of big
                     items like rent and car payments, but then it starts to get
@@ -28,7 +30,11 @@ export default function LandingPage() {
 
             <section>
                 <h3>Start using a budget</h3>
-                <img className='landing_image' src={ImageBudget} />
+                <img
+                    className='landing_image'
+                    src={ImageBudget}
+                    alt='budget and tracking documents on table with pen and bowl of paperclips'
+                />
                 <p>
                     Once you know where your money is being spent, you can
                     figure out how you should spend it in the future. Expense
@@ -39,7 +45,11 @@ export default function LandingPage() {
 
             <section>
                 <h3>Start learning</h3>
-                <img className='landing_image' src={ImageChart} />
+                <img
+                    className='landing_image'
+                    src={ImageChart}
+                    alt='horizontal bar chart showing budget category spending vs. category budget amount'
+                />
                 <p>
                     Expense Tracker will use your financial history to show you
                     monthly, annual, and lifetime spending. Use this information

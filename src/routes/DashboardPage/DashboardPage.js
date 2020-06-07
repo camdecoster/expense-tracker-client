@@ -255,6 +255,7 @@ export default function DashboardPage() {
                     {createIntervalChangeButton("quarter")}
                     {createIntervalChangeButton("year")}
                 </div> */}
+                <label htmlFor='display-month'>Show Expenses For:</label>
                 <select
                     name='display-month'
                     id='display-month'

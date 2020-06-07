@@ -26,7 +26,10 @@ export default function EditExpensePage() {
 
     function handleFormSuccess(newItemPath) {
         // Route user to new item
-        history.push(newItemPath);
+        // history.push(newItemPath);
+
+        // Route user to list of items
+        history.push("/expenses");
     }
 
     return (

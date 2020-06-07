@@ -1,20 +1,13 @@
 // React
-import React, { Component, useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 // Configuration
 import "./LoginForm.css";
-import TrackerContext from "../../contexts/TrackerContext";
 import TokenService from "../../services/token-service";
 import AuthApiService from "../../services/auth-api-service";
 
 export default function LoginForm(props) {
-    // Access context
-    const context = useContext(TrackerContext);
-
-    // Get default email and password if passed in
-    const { email = "", password = "" } = props;
-
     const [error, setError] = useState(null);
 
     function handleSubmit(ev) {

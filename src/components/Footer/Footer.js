@@ -15,6 +15,7 @@ class Footer extends Component {
                         title='GitHub Repository'
                         target='_blank'
                         rel='noopener noreferrer'
+                        aria-label='GitHub Repository'
                     >
                         <FontAwesomeIcon
                             className='faIcon'
@@ -26,6 +27,7 @@ class Footer extends Component {
                         title='LinkedIn Profile'
                         target='_blank'
                         rel='noopener noreferrer'
+                        aria-label='LinkedIn Profile'
                     >
                         <FontAwesomeIcon className='faIcon' icon={faLinkedin} />
                     </a>

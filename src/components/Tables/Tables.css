@@ -1,12 +1,16 @@
 table {
     border-collapse: collapse;
     text-align: center;
-    background-color: var(--blue-light);
+    background-color: var(--blue-medium);
     font-size: 12.7px;
 }
 
+table a {
+    font-weight: bold;
+}
+
 th {
-    background-color: var(--blue-medium);
+    background-color: var(--blue-light);
 }
 
 table,

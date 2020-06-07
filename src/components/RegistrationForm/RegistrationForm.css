@@ -1,14 +1,6 @@
-#RegistrationForm {
-    width: 300px;
-}
-
-#RegistrationForm .error {
-    color: red;
-    font-weight: bold;
-}
-
 #button_register:disabled {
     background-color: darkgray;
+    color: black;
 }
 
 #button_password_reqs {
@@ -21,10 +13,6 @@
     font-size: 10px;
     font-weight: bold;
 }
-
-/* #button_password_reqs:hover {
-    color: var(--orange-dark);
-} */
 
 #password_reqs {
     width: 300px;
